@@ -12,6 +12,14 @@
 
 #include "fdf.h"
 
+/*
+
+int num = 1;
+if(*(char *)&num == 1){
+    printf("\nLittle-Endian\n");
+*/
+
+
 #if 0
        int
        mlx_pixel_put ( void *mlx_ptr, void *win_ptr, int x, int y, int color );
@@ -20,14 +28,9 @@
        mlx_string_put ( void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string );
 #endif
 
-int		t_color_to_colorint(t_color color)
+inline int		t_color_to_colorint(t_color color)
 {
-	t_u32		res;
-
-	res = color.blue;
-	res |= color.green << 8;
-	res |= color.red << 16;
-	return ((int)res);
+	return (color.red << 16 | color.green << 8 | color.blue);
 }
 
 /*

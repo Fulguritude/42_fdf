@@ -13,6 +13,7 @@
 #ifndef FDF_H
 # define FDF_H
 # include "minilibx/mlx.h"
+# include "math.h"
 
 
 //TODO remove
@@ -51,7 +52,6 @@ typedef	long			t_s64;
 typedef float			t_f32;
 typedef double			t_f64;
 
-
 typedef struct	s_control
 {
 	void	*mlx_ptr;
@@ -63,15 +63,26 @@ typedef struct	s_color
 	t_u8	red;
 	t_u8	green;
 	t_u8	blue;
-	t_u32	color;
 }				t_color;
 
+/*
+** Let H be a 4-dimensional algebra over R, with basis {1, i, j, k} such that
+**		i * i == j * j == k * k == ijk == -1
+** Note that multiplication of non-unit basis vectors is anticommutative.
+** H is called the ring of quaternions.
+**
+** NB: quaternions are used in the code as ordered pairs [r, (x, y, z)] to make
+**		the code more legible, where r is a "real" quaternion and (x,y,z) is
+**		a "pure" quaternion.
+*/
 typedef struct	s_quat
 {
-	t_u64	r;
-	t_u64	x;
-	t_u64	y;
-	t_u64	z;
+	t_f32	r;
+	t_f32	x;
+	t_f32	y;
+	t_f32	z;
 }				t_quat;
+
+t_quat	hamilton_product(t_quat const a, t_quat const b);
 
 #endif
