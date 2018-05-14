@@ -49,14 +49,23 @@ int		handle_key(int key, void *param)
 */
 int		handle_mouse(int button, int x, int y, void *param)
 {
-	t_control	*ctrl;
+	t_control			*ctrl;
+	static int			click_nb = -1;
+	static t_gridpoint	last_click_coord = NULL;
 
+	++click_nb;
 	ctrl = (t_control*)param;
 	printf("mouse: %d, (%d, %d), %p\n", button, x, y, param);
 	if (button == L_CLICK)
 		mlx_pixel_put(ctrl->mlx_ptr, ctrl->win_ptr, x, y, RED);
 	else if (button == R_CLICK)
 		mlx_pixel_put(ctrl->mlx_ptr, ctrl->win_ptr, x, y, BLUE);
+	if (click_nb == 1)
+	{
+
+	}
+	last_click_coord[0] = x;
+	last_click_coord[1] = y;
 	return (0);
 }
 

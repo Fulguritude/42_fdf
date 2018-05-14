@@ -39,6 +39,9 @@
 # define SCROLL_UP		0x4
 # define SCROLL_DOWN	0x5
 
+# define PI				0x1.921fb54442d18p+1
+# define TAU 			0x1.921fb54442d18p+2
+
 
 
 typedef	unsigned char	t_u8;
@@ -57,6 +60,12 @@ typedef struct	s_control
 	void	*mlx_ptr;
 	void	*win_ptr;
 }				t_control;
+
+typedef struct	s_gridpoint
+{
+	int		x;
+	int		y;
+}				t_gridpoint;
 
 typedef struct	s_color
 {
@@ -82,6 +91,8 @@ typedef struct	s_quat
 	t_f32	y;
 	t_f32	z;
 }				t_quat;
+
+typedef t_quat	t_unit_quat;
 
 t_quat	hamilton_product(t_quat const a, t_quat const b);
 
