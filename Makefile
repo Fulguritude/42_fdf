@@ -38,20 +38,31 @@ HDRDIR	=	./
 LFTDIR	=	./libft/
 TSTDIR	=	./tests/
 
-HDRS	=	fdf.h
-SRCS	=	main_fdf.c
+HDRS	=	fdf.h					\
+			algebra.h				\
+			get_next_line.h
+SRCS	=	main_fdf.c				\
+			get_next_line.c			\
+			reader_fdf.c			\
+			bresenham.c				\
+			quaternion_products.c	\
+			image_utils.c			\
+			event_handlers.c		\
+			matrix_op.c				\
+			color.c
 OBJS	=	$(SRCS:.c=.o)
 
 RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
 GREEN	=	"\033[0;32m"
 
-
-$(NAME): $(OBJS)
+$(NAME): $(LFTDIR)$(LFT) $(OBJS)
 	@printf "Compiling fdf: "$@" -> "$(RED)
-	@$(CC) $(CFLAGS) -c $(SRCS) -I$(HDRDIR)
-	@$(CC) $(CFLAGS) $(OBJS) -lmlx$(LIB_SUFF) -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
+	@$(CC) $(CFLAGS) $(OBJS) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
+
+$(OBJS): $(SRCS)	
+	@$(CC) $(CFLAGS) -c $(SRCS) -I$(HDRDIR)
 
 #dependencies are taken care of in libft's makefile.
 $(LFTDIR)$(LFT):

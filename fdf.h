@@ -13,11 +13,33 @@
 #ifndef FDF_H
 # define FDF_H
 # include "minilibx/mlx.h"
-# include "math.h"
-
+# include <stdlib.h>
+# include <errno.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include "algebra.h"
+# include "libft/hdr/libft_mem.h"
+# include "libft/hdr/libft_math.h"
+# include "libft/hdr/libft_str.h"
 
 //TODO remove
+# define GNU_SOURCE 1
 # include <stdio.h>
+
+//# define BIG_ENDIAN		1
+//# define LIT_ENDIAN		0
+
+# define MAX_LINE_SIZE	4096
+# define MAX_LINE_NB	4096
+
+# define WIN_WIDTH				400
+# define WIN_HEIGHT				300
+# define REN_WIDTH				500
+# define REN_HEIGHT				400
+# define HALF_DRENWIN_WIDTH		50
+# define HALF_DRENWIN_HEIGHT	50
 
 //for keypad int codes /usr/include/X11/keysymdef.h
 # define XK_KP_Space                      0xff80
@@ -42,58 +64,74 @@
 # define PI				0x1.921fb54442d18p+1
 # define TAU 			0x1.921fb54442d18p+2
 
-
-
-typedef	unsigned char	t_u8;
-typedef	unsigned short	t_u16;
-typedef	unsigned int	t_u32;
-typedef	unsigned long	t_u64;
-typedef char			t_s8;
-typedef short			t_s16;
-typedef int				t_s32;
-typedef	long			t_s64;
-typedef float			t_f32;
-typedef double			t_f64;
-
-typedef struct	s_control
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-}				t_control;
-
 typedef struct	s_gridpoint
 {
-	int		x;
-	int		y;
+	int				x;
+	int				y;
 }				t_gridpoint;
 
 typedef struct	s_color
 {
-	t_u8	red;
-	t_u8	green;
-	t_u8	blue;
+	t_u8			alpha;
+	t_u8			red;
+	t_u8			green;
+	t_u8			blue;
 }				t_color;
 
-/*
-** Let H be a 4-dimensional algebra over R, with basis {1, i, j, k} such that
-**		i * i == j * j == k * k == ijk == -1
-** Note that multiplication of non-unit basis vectors is anticommutative.
-** H is called the ring of quaternions.
-**
-** NB: quaternions are used in the code as ordered pairs [r, (x, y, z)] to make
-**		the code more legible, where r is a "real" quaternion and (x,y,z) is
-**		a "pure" quaternion.
-*/
-typedef struct	s_quat
+typedef struct	s_vertex
 {
-	t_f32	r;
-	t_f32	x;
-	t_f32	y;
-	t_f32	z;
-}				t_quat;
+	t_vec_3d		pos;
+	t_color			color;
+}				t_vertex;
 
-typedef t_quat	t_unit_quat;
+typedef struct	s_edge
+{
+	t_vertex		*vtx_from;
+	t_vertex		*vtx_to;
+}				t_edge;
 
-t_quat	hamilton_product(t_quat const a, t_quat const b);
+typedef struct	s_fdf
+{
+	int				vtx_lst_len;
+	int				edge_lst_len;
+	t_vertex		*vtx_lst;
+	t_edge			*edge_lst;
+}				t_fdf;
+
+/*
+** bpp Bits per pixel are converted immediately to bytes per pixel,
+** bpl bytes per line
+*/
+typedef struct	s_control
+{
+	t_fdf			fdf;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	int				img_bpp;
+	int				img_bpl;
+	int				img_bytelen;
+	int				endian;
+	char			*img_data;
+}				t_control;
+
+int				handle_key(int key, void *param);
+int				handle_mouse(int button, int x, int y, void *param);
+int				handle_redraw(void *param);
+
+t_fdf			init_fdf(char *filepath);
+
+void			bresenham(t_control *ctrl, t_gridpoint start,
+											int endx, int endy);
+
+int				t_color_to_colorint(t_color color);
+t_color			new_color(t_u8 alpha, t_u8 red, t_u8 green, t_u8 blue);
+
+int				point_in_bounds(int x, int y);
+void			mlximg_setpixel(t_control *ctrl, int color, int x, int y);
+void			mlximg_clear(t_control *ctrl);
+
+
+void			exit_error(char *e_msg, int e_no);
 
 #endif
