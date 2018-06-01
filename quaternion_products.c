@@ -19,36 +19,6 @@
 ** scalar and a 3D vector. 
 */
 
-
-//TODO
-/*
-** Make fast and test
-**
-t_f32		fast_inv_sqrt(t_f32 f)
-{
-	long		i;
-	t_f32		x2;
-	t_f32		y;
-	const t_f32 threehalfs = 1.5F;
-
-	x2 = f * 0.5F;
-	y  = f;
-	i  = *(long *)(&y);
-	i  = 0x5f3759df - (i >> 1);
-	y  = *(t_f32 *)(&i);
-	y  = y * (threehalfs - ( x2 * y * y ));
-//	y  = y * (threehalfs - ( x2 * y * y ));
-	return y;
-}
-**
-*/
-t_f32		fast_inv_sqrt(t_f32 f)
-{
-	return (1. / sqrt(f));
-}
-
-
-
 t_quat			hop_add(t_quat const q1, t_quat const q2)
 {
 	t_quat	res;

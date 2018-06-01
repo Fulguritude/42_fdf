@@ -34,6 +34,45 @@ void			exit_error(char *e_msg, int e_no)
 }
 
 /*
+**
+	t_vec_3d	pos;
+	t_vec_3d	anchor;
+	t_vec_3d	axis_x; //right
+	t_vec_3d	axis_y; //up
+	t_vec_3d	axis_z; //forward input eye
+*/
+
+# define INIT_CAM_POS_X	30.0
+# define INIT_CAM_POS_Y	50.0
+# define INIT_CAM_POS_Z	10.0
+# define INIT_CAM_ANC_X	0.
+# define INIT_CAM_ANC_Y	0.
+# define INIT_CAM_ANC_Z	0.
+
+t_camera		init_cam()
+{
+	t_camera	result;
+
+	vec3_set(result.pos, REN_WIDTH / 2, 0, REN_HEIGHT / 2);
+vec3_normalize(result.pos, result.pos);
+	vec3_set(result.anchor, 0, 0, 0);
+	vec3_sub(result.axis_x, result.pos, result.anchor);
+	vec3_normalize(result.axis_x, result.axis_x);
+/*	if (ft_abs(result.axis_x[0]) < 0.001)
+		result.axis_x[0] = 0.001;
+	if (ft_abs(result.axis_x[1]) < 0.001)
+		result.axis_x[1] = 0.001;
+*/	result.axis_z[0] = 0.;
+	result.axis_z[1] = 0.;
+	result.axis_z[2] = 1.;
+	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
+	vec3_normalize(result.axis_y, result.axis_y);
+	vec3_cross(result.axis_z, result.axis_x, result.axis_y);
+	vec3_normalize(result.axis_z, result.axis_z);
+	return (result);
+}
+
+/*
 ** Bits per pixel (32, each color is an int) are immediately converted to
 ** bytes per pixel.
 */
@@ -52,7 +91,9 @@ int				main(int argc, char **argv)
 	ctrl.img_bpp = ctrl.img_bpp / 8;
 	ctrl.img_bytelen = ctrl.img_bpp * ctrl.img_bpl * REN_HEIGHT;
 	ctrl.fdf = init_fdf(argv[1]);
+	ctrl.cam = init_cam();
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
 	mlx_mouse_hook(ctrl.win_ptr, handle_mouse, &ctrl);
+	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
 	mlx_loop(ctrl.mlx_ptr);
 }

@@ -18,7 +18,15 @@
 
 int		handle_key(int key, void *param)
 {
-	printf("key: %d, %p\n", key, param);
+	t_control	*ctrl;
+
+	ctrl = (t_control *)param;
+	printf("key: %d, %p; Space == %d\n", key, param, XK_KP_Space);
+	if (key == XK_KP_Space)
+	{
+		printf("sending window to null:\n");	
+		mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
+	}
 	return (0);
 }
 
@@ -31,6 +39,7 @@ int		handle_mouse(int button, int x, int y, void *param)
 	t_control			*ctrl;
 	static int			click_nb = -1;
 	static t_gridpoint	last_click_coord;
+	t_gridpoint			tmp;
 
 	++click_nb;
 	ctrl = (t_control*)param;
@@ -41,13 +50,16 @@ int		handle_mouse(int button, int x, int y, void *param)
 		mlx_pixel_put(ctrl->mlx_ptr, ctrl->win_ptr, x, y, BLUE);
 	if (click_nb == 1)
 	{
-		bresenham(ctrl, last_click_coord,
-					x + HALF_DRENWIN_WIDTH, y + HALF_DRENWIN_HEIGHT);
+		tmp.x = x + HALF_DRENWIN_WIDTH;
+		tmp.y = y + HALF_DRENWIN_HEIGHT;
+printf("mouse bresenham\n\t(%d,%d); (%d,%d)\n", last_click_coord.x, last_click_coord.y, tmp.x, tmp.y);
+		bresenham(ctrl, last_click_coord, tmp);
 		click_nb = -1;
 	}
 	last_click_coord.x = x + HALF_DRENWIN_WIDTH;
 	last_click_coord.y = y + HALF_DRENWIN_WIDTH;
-	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr,
+printf("mouse put image\n");
+	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr,// 0, 0);
 							-HALF_DRENWIN_WIDTH, -HALF_DRENWIN_HEIGHT);
 	return (0);
 }
@@ -58,7 +70,49 @@ int		handle_mouse(int button, int x, int y, void *param)
 
 int		handle_redraw(void *param)
 {
-	printf("redraw: %p\n", param);
+	t_control	*ctrl;
+	t_mat_4b4	w_to_v;
+	t_vec_4d	tmp;
+	int			i;
+
+	ctrl = (t_control *)param;
+printf("redraw1: %p\n", param);
+	i = -1;
+	cam_to_mat(w_to_v, ctrl->cam);
+printf("\tcam mat transpose\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\n", w_to_v[0], w_to_v[1], w_to_v[2], w_to_v[3], w_to_v[4], w_to_v[5], w_to_v[6], w_to_v[7], w_to_v[8], w_to_v[9], w_to_v[10], w_to_v[11], w_to_v[12], w_to_v[13], w_to_v[14], w_to_v[15]);
+	while (++i < ctrl->fdf.vtx_lst_len)
+	{
+		//make one single obj to proj matrix rather than these steps
+		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
+		tmp[3] = 1.;
+printf("\t(%.3f, %.3f, %.3f, %.3f)\t", tmp[0], tmp[1], tmp[2], tmp[3]);
+		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
+printf("\t(%.3f, %.3f, %.3f, %.3f)\t", tmp[0], tmp[1], tmp[2], tmp[3]);
+		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);
+vec3_cpy(tmp, ctrl->fdf.vtx_lst[i].view_pos);
+printf("\t(%.3f, %.3f, %.3f, %.3f)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
+vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10., ctrl->fdf.vtx_lst[i].view_pos);
+		ctrl->fdf.vtx_lst[i].proj_pos = orthogonal_proj((t_float *)(ctrl->fdf.vtx_lst[i].view_pos));
+	}
+
+	t_gridpoint 	vtx1_pixmap_pos;
+	t_gridpoint 	vtx2_pixmap_pos;
+
+	i = -1;
+printf("redraw2: %p\n", param);
+	while (++i < ctrl->fdf.edge_lst_len)
+	{
+		vtx1_pixmap_pos = (*(ctrl->fdf.edge_lst[i].vtx_from)).proj_pos;
+		vtx2_pixmap_pos = (*(ctrl->fdf.edge_lst[i].vtx_to)).proj_pos;
+printf("\t(%d, %d) ; (%d, %d)\n", vtx1_pixmap_pos.x, vtx1_pixmap_pos.y, vtx2_pixmap_pos.x, vtx2_pixmap_pos.y);
+		if (point_in_bounds(vtx1_pixmap_pos.x, vtx1_pixmap_pos.y) &&
+			point_in_bounds(vtx2_pixmap_pos.x, vtx2_pixmap_pos.y))
+		{
+printf("expose bresenham\n\t(%d,%d); (%d,%d)\n", vtx1_pixmap_pos.x, vtx1_pixmap_pos.y, vtx2_pixmap_pos.x, vtx2_pixmap_pos.y);
+			bresenham(ctrl, vtx1_pixmap_pos, vtx2_pixmap_pos);
+		}
+	}
+	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
 	return (0);
 }
 

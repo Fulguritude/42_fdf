@@ -12,6 +12,7 @@
 
 #ifndef FDF_H
 # define FDF_H
+//# include <X11.h>
 # include "minilibx/mlx.h"
 # include <stdlib.h>
 # include <errno.h>
@@ -42,7 +43,8 @@
 # define HALF_DRENWIN_HEIGHT	50
 
 //for keypad int codes /usr/include/X11/keysymdef.h
-# define XK_KP_Space                      0xff80
+//# define XK_KP_Space                      0xff80
+# define XK_KP_Space                      0x0020
 # define XK_KP_Tab                        0xff89
 # define XK_KP_Enter                      0xff8d
 # define XK_KP_Left                       0xff96
@@ -78,9 +80,14 @@ typedef struct	s_color
 	t_u8			blue;
 }				t_color;
 
+/*
+** Model -> World -> View (cam space) -> Projection
+*/
 typedef struct	s_vertex
 {
-	t_vec_3d		pos;
+	t_vec_3d		world_pos;
+	t_vec_4d		view_pos;
+	t_gridpoint		proj_pos;
 	t_color			color;
 }				t_vertex;
 
@@ -98,6 +105,15 @@ typedef struct	s_fdf
 	t_edge			*edge_lst;
 }				t_fdf;
 
+typedef struct	s_camera
+{
+	t_vec_3d	pos;
+	t_vec_3d	anchor;
+	t_vec_3d	axis_x; //right
+	t_vec_3d	axis_y; //up
+	t_vec_3d	axis_z; //forward input eye
+}				t_camera;
+
 /*
 ** bpp Bits per pixel are converted immediately to bytes per pixel,
 ** bpl bytes per line
@@ -105,6 +121,7 @@ typedef struct	s_fdf
 typedef struct	s_control
 {
 	t_fdf			fdf;
+	t_camera		cam;
 	void			*mlx_ptr;
 	void			*win_ptr;
 	void			*img_ptr;
@@ -121,8 +138,7 @@ int				handle_redraw(void *param);
 
 t_fdf			init_fdf(char *filepath);
 
-void			bresenham(t_control *ctrl, t_gridpoint start,
-											int endx, int endy);
+void			bresenham(t_control *ctrl, t_gridpoint start, t_gridpoint end);
 
 int				t_color_to_colorint(t_color color);
 t_color			new_color(t_u8 alpha, t_u8 red, t_u8 green, t_u8 blue);
@@ -131,7 +147,11 @@ int				point_in_bounds(int x, int y);
 void			mlximg_setpixel(t_control *ctrl, int color, int x, int y);
 void			mlximg_clear(t_control *ctrl);
 
-
 void			exit_error(char *e_msg, int e_no);
+
+
+void			cam_to_mat(t_mat_4b4 result, t_camera cam);
+t_gridpoint		orthogonal_proj(t_vec_3d v);
+t_gridpoint		isometric_proj(t_vec_3d v);
 
 #endif

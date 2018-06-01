@@ -48,7 +48,10 @@ SRCS	=	main_fdf.c				\
 			quaternion_products.c	\
 			image_utils.c			\
 			event_handlers.c		\
-			matrix_op.c				\
+			vec3_op.c				\
+			mat33_op.c				\
+			mat44_op.c				\
+			projectors.c			\
 			color.c
 OBJS	=	$(SRCS:.c=.o)
 

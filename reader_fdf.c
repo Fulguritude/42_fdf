@@ -35,14 +35,15 @@ static void		build_all_edge_pairs(t_fdf *fdf, int line_nb, int line_size)
 		exit_error("malloc failure in build_edges", errno);
 	k = -1;
 	i = -1;
-	while (++i < fdf->vtx_lst_len - line_size)
-		if ((i + 1) % line_size != 0)
+	while (++i < fdf->vtx_lst_len)
+		if ((i + 1) % line_size != 0) //there are line_nb times this is not true 
 		{
 			tmp.vtx_from = &(fdf->vtx_lst[i]);
 			tmp.vtx_to = &(fdf->vtx_lst[i + 1]);
 			result[++k] = tmp;
 		}
-	while (++i < fdf->vtx_lst_len)
+	i = -1;
+	while (++i < fdf->vtx_lst_len - line_size)
 	{
 		tmp.vtx_from = &(fdf->vtx_lst[i]);
 		tmp.vtx_to = &(fdf->vtx_lst[i + line_size]);
@@ -75,9 +76,9 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 		while (++tmp[0] < (t_float)min_line_size)
 		{
 //printf("\t\tloop %d, %d, %d\n", (int)tmp[0], (int)tmp[1], (int)tmp[2]);
-			tmp[2] = (t_float)ft_atoi(file_data[(int)tmp[1]][(int)tmp[0]]);
+			tmp[2] = (t_float)ft_atoi(file_data[(int)tmp[1]][(int)tmp[0]]) / 10.;
 			ft_memcpy(&(fdf.vtx_lst[(int)tmp[1] * min_line_size + (int)tmp[0]]),
-						tmp, T_VEC_SIZE);
+						tmp, T_VEC3_SIZE);
 		}
 	}
 	fdf.vtx_lst_len = line_nb * min_line_size;

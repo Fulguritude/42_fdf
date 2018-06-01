@@ -120,23 +120,19 @@ static void		draw_horzoct(t_control *ctrl, t_gridpoint start,
 	}
 }
 
-void			bresenham(t_control *ctrl, t_gridpoint start,
-											int endx, int endy)
+void			bresenham(t_control *ctrl, t_gridpoint start, t_gridpoint end)
 {
-	t_gridpoint		end;
 	t_gridpoint		d;
 
-	d.x = ft_abs((endx - start.x) * 2);
-	d.y = ft_abs((endy - start.y) * 2);
-	end.x = endx;
-	end.y = endy;
+	d.x = ft_abs((end.x - start.x) * 2);
+	d.y = ft_abs((end.y - start.y) * 2);
 	mlximg_setpixel(ctrl, RED, start.x, start.y);
 	if (d.x == 0 && d.y == 0)
 		return ;
 	else if (d.x == 0)
-		draw_vert(ctrl, start, endy);
+		draw_vert(ctrl, start, end.y);
 	else if (d.y == 0)
-		draw_horz(ctrl, start, endx);
+		draw_horz(ctrl, start, end.x);
 	else if (d.x < d.y)
 		draw_vertoct(ctrl, start, end, d);
 	else
