@@ -42,9 +42,9 @@ void			exit_error(char *e_msg, int e_no)
 	t_vec_3d	axis_z; //forward input eye
 */
 
-# define INIT_CAM_POS_X	30.0
-# define INIT_CAM_POS_Y	50.0
-# define INIT_CAM_POS_Z	10.0
+# define INIT_CAM_POS_X	-30.0
+# define INIT_CAM_POS_Y	40.0
+# define INIT_CAM_POS_Z -20.0
 # define INIT_CAM_ANC_X	0.
 # define INIT_CAM_ANC_Y	0.
 # define INIT_CAM_ANC_Z	0.
@@ -53,8 +53,14 @@ t_camera		init_cam()
 {
 	t_camera	result;
 
-	vec3_set(result.pos, REN_WIDTH / 2, 0, REN_HEIGHT / 2);
+/*
+	vec3_set(result.pos, REN_WIDTH / 2, REN_HEIGHT / 2, 0);
+	vec3_normalize(result.pos, result.pos);
+*/
+	vec3_set(result.polar_pos, 40., PI / 4., PI / 4.);
+	vec3_polar_to_cartesian(result.pos, result.polar_pos);
 vec3_normalize(result.pos, result.pos);
+
 	vec3_set(result.anchor, 0, 0, 0);
 	vec3_sub(result.axis_x, result.pos, result.anchor);
 	vec3_normalize(result.axis_x, result.axis_x);
@@ -62,9 +68,8 @@ vec3_normalize(result.pos, result.pos);
 		result.axis_x[0] = 0.001;
 	if (ft_abs(result.axis_x[1]) < 0.001)
 		result.axis_x[1] = 0.001;
-*/	result.axis_z[0] = 0.;
-	result.axis_z[1] = 0.;
-	result.axis_z[2] = 1.;
+*/
+	vec3_set(result.axis_z, 0., 0., 1.);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
 	vec3_normalize(result.axis_y, result.axis_y);
 	vec3_cross(result.axis_z, result.axis_x, result.axis_y);

@@ -51,6 +51,7 @@ SRCS	=	main_fdf.c				\
 			vec3_op.c				\
 			mat33_op.c				\
 			mat44_op.c				\
+			coordinates.c			\
 			projectors.c			\
 			color.c
 OBJS	=	$(SRCS:.c=.o)

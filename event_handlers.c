@@ -21,12 +21,14 @@ int		handle_key(int key, void *param)
 	t_control	*ctrl;
 
 	ctrl = (t_control *)param;
-	printf("key: %d, %p; Space == %d\n", key, param, XK_KP_Space);
+	printf("key: %d, %x, %p;\n", key, key, param);
 	if (key == XK_KP_Space)
 	{
 		printf("sending window to null:\n");	
 		mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
 	}
+//	else if (key == XK_KP_Left)
+		
 	return (0);
 }
 

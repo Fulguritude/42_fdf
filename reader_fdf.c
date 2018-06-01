@@ -43,7 +43,7 @@ static void		build_all_edge_pairs(t_fdf *fdf, int line_nb, int line_size)
 			result[++k] = tmp;
 		}
 	i = -1;
-	while (++i < fdf->vtx_lst_len - line_size)
+	while (++i <= fdf->vtx_lst_len - line_size)
 	{
 		tmp.vtx_from = &(fdf->vtx_lst[i]);
 		tmp.vtx_to = &(fdf->vtx_lst[i + line_size]);

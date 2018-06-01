@@ -47,10 +47,16 @@
 # define XK_KP_Space                      0x0020
 # define XK_KP_Tab                        0xff89
 # define XK_KP_Enter                      0xff8d
+/*
 # define XK_KP_Left                       0xff96
 # define XK_KP_Up                         0xff97
 # define XK_KP_Right                      0xff98
 # define XK_KP_Down                       0xff99
+*/
+# define XK_KP_Left                       0xff51
+# define XK_KP_Up                         0xff52
+# define XK_KP_Right                      0xff53
+# define XK_KP_Down                       0xff54
 
 # define BLACK			0x000000
 # define RED			0xFF0000
@@ -108,6 +114,7 @@ typedef struct	s_fdf
 typedef struct	s_camera
 {
 	t_vec_3d	pos;
+	t_vec_3d	polar_pos;
 	t_vec_3d	anchor;
 	t_vec_3d	axis_x; //right
 	t_vec_3d	axis_y; //up

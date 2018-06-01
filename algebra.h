@@ -84,6 +84,9 @@ void		vec3_scale(t_vec_3d result, t_float const s, t_vec_3d const v);
 void		vec3_normalize(t_vec_3d result, t_vec_3d const v);
 void		vec3_cross(t_vec_3d result, t_vec_3d const v1, t_vec_3d const v2);
 
+void		vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src);
+void		vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src);
+
 void			mat44_add(t_mat_4b4 result, t_mat_4b4 ma, t_mat_4b4 mb);
 void			mat44_scale(t_mat_4b4 result, t_mat_4b4 m, t_float s);
 void			mat44_app_vec(t_vec_4d result, t_mat_4b4 m, t_vec_4d v);
