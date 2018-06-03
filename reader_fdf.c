@@ -57,8 +57,9 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 {
 	t_fdf		fdf;
 	t_u32		min_line_size;
-	t_vec_3d	tmp;
+//	t_vec_3d	tmp;
 	int			i;
+	int			j;
 
 	min_line_size = (t_u32)(-1);
 //printf("\tbuildfdf, line_nb %d\n", line_nb);
@@ -69,16 +70,14 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 //printf("\tmin_line_size : %d\n", min_line_size);
 	if (!(fdf.vtx_lst = malloc(sizeof(t_vertex) * line_nb * min_line_size)))
 		exit_error("malloc failure in build_fdf", errno);
-	tmp[1] = -1.;
-	while (++tmp[1] < line_nb)
+	i = -1;
+	while (++i < line_nb)
 	{
-		tmp[0] = -1.;
-		while (++tmp[0] < (t_float)min_line_size)
+		j = -1;
+		while (++j < (t_float)min_line_size)
 		{
 //printf("\t\tloop %d, %d, %d\n", (int)tmp[0], (int)tmp[1], (int)tmp[2]);
-			tmp[2] = (t_float)ft_atoi(file_data[(int)tmp[1]][(int)tmp[0]]) / 10.;
-			ft_memcpy(&(fdf.vtx_lst[(int)tmp[1] * min_line_size + (int)tmp[0]]),
-						tmp, T_VEC3_SIZE);
+			vec3_set(fdf.vtx_lst[i * min_line_size + j].world_pos, j, i, (t_float)ft_atoi(file_data[i][j]) / 10.);
 		}
 	}
 	fdf.vtx_lst_len = line_nb * min_line_size;
@@ -114,5 +113,9 @@ t_fdf			init_fdf(char *line)
 //printf("Debug3\n");
 	while (--line_nb >= 0)
 		ft_strlsdel(&(file_data[line_nb]));
+printf("All vertices :\n");
+for (int i = 0; i < fdf.vtx_lst_len; i++) printf("\t(%f, %f, %f)\n", fdf.vtx_lst[i].world_pos[0],  fdf.vtx_lst[i].world_pos[1],  fdf.vtx_lst[i].world_pos[2]);
+//printf("All edges :\n");
+//for (int i = 0; i < fdf.edges_lst_len; i++) printf("\t(%f, %f, %f); \n", fdf.edge_lst[i][0],  fdf.edge_lst[i][1],  fdf.edge_lst[i][2]);
 	return (fdf);
 }

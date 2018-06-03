@@ -35,12 +35,12 @@
 # define MAX_LINE_SIZE	4096
 # define MAX_LINE_NB	4096
 
-# define WIN_WIDTH				400
-# define WIN_HEIGHT				300
-# define REN_WIDTH				500
-# define REN_HEIGHT				400
-# define HALF_DRENWIN_WIDTH		50
-# define HALF_DRENWIN_HEIGHT	50
+# define WIN_WIDTH				800
+# define WIN_HEIGHT				600
+# define REN_WIDTH				1000
+# define REN_HEIGHT				800
+# define HALF_DRENWIN_WIDTH		100
+# define HALF_DRENWIN_HEIGHT	100
 
 //for keypad int codes /usr/include/X11/keysymdef.h
 //# define XK_KP_Space                      0xff80
@@ -53,10 +53,13 @@
 # define XK_KP_Right                      0xff98
 # define XK_KP_Down                       0xff99
 */
-# define XK_KP_Left                       0xff51
-# define XK_KP_Up                         0xff52
-# define XK_KP_Right                      0xff53
-# define XK_KP_Down                       0xff54
+# define XK_KP_Left						0xff51
+# define XK_KP_Up						0xff52
+# define XK_KP_Right					0xff53
+# define XK_KP_Down						0xff54
+# define XK_KP_PageUp					0xff55
+# define XK_KP_PageDown					0xff56
+
 
 # define BLACK			0x000000
 # define RED			0xFF0000
@@ -69,6 +72,7 @@
 # define SCROLL_UP		0x4
 # define SCROLL_DOWN	0x5
 
+# define HALF_PI		0x1.921fb54442d18p+0
 # define PI				0x1.921fb54442d18p+1
 # define TAU 			0x1.921fb54442d18p+2
 
@@ -113,9 +117,10 @@ typedef struct	s_fdf
 
 typedef struct	s_camera
 {
-	t_vec_3d	pos;
-	t_vec_3d	polar_pos;
-	t_vec_3d	anchor;
+	t_vec_3d	world_pos; //cartesian coordinate of camera in world
+	t_vec_3d	reltv_pos; //cartesian coordinate of camera with anchor as center
+	t_vec_3d	polar_pos; //zoom/radius, longitude, latitude relative to anchor
+	t_vec_3d	anchor; //origin of polar_pos and reltv_pos
 	t_vec_3d	axis_x; //right
 	t_vec_3d	axis_y; //up
 	t_vec_3d	axis_z; //forward input eye
@@ -124,6 +129,7 @@ typedef struct	s_camera
 /*
 ** bpp Bits per pixel are converted immediately to bytes per pixel,
 ** bpl bytes per line
+** img is bigger than window
 */
 typedef struct	s_control
 {
@@ -144,6 +150,7 @@ int				handle_mouse(int button, int x, int y, void *param);
 int				handle_redraw(void *param);
 
 t_fdf			init_fdf(char *filepath);
+t_camera		init_cam(t_vec_3d polar_cam_pos);
 
 void			bresenham(t_control *ctrl, t_gridpoint start, t_gridpoint end);
 

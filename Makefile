@@ -62,7 +62,7 @@ GREEN	=	"\033[0;32m"
 
 $(NAME): $(LFTDIR)$(LFT) $(OBJS)
 	@printf "Compiling fdf: "$@" -> "$(RED)
-	@$(CC) $(CFLAGS) $(OBJS) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJS): $(SRCS)	
