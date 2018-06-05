@@ -142,12 +142,12 @@ printf("\tcam mat transpose\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\
 		//make one single obj to proj matrix rather than these steps
 		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
 		tmp[3] = 1.;
-//printf("\t(%.3f, %.3f, %.3f, %.3f)\t", tmp[0], tmp[1], tmp[2], tmp[3]);
+printf("\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
-//printf("\t(%.3f, %.3f, %.3f, %.3f)\t", tmp[0], tmp[1], tmp[2], tmp[3]);
+printf("\t--cam->\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);
 //vec3_cpy(tmp, ctrl->fdf.vtx_lst[i].view_pos);
-//printf("\t(%.3f, %.3f, %.3f, %.3f)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
+printf("\t--sub w_to_v[12:16[->\t(%7.3g, %7.3g, %7.3g, %7.3g)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
 vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10., ctrl->fdf.vtx_lst[i].view_pos);
 		ctrl->fdf.vtx_lst[i].proj_pos = isometric_proj((t_float *)(ctrl->fdf.vtx_lst[i].view_pos));
 	}
