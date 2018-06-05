@@ -12,6 +12,14 @@
 
 #ifndef FDF_H
 # define FDF_H
+
+//TODO remove
+# ifndef _GNU_SOURCE
+# define _GNU_SOURCE 1
+# endif
+
+# include <stdio.h>
+
 //# include <X11.h>
 # include "minilibx/mlx.h"
 # include <stdlib.h>
@@ -24,10 +32,6 @@
 # include "libft/hdr/libft_mem.h"
 # include "libft/hdr/libft_math.h"
 # include "libft/hdr/libft_str.h"
-
-//TODO remove
-# define GNU_SOURCE 1
-# include <stdio.h>
 
 //# define BIG_ENDIAN		1
 //# define LIT_ENDIAN		0
@@ -59,6 +63,7 @@
 # define XK_KP_Down						0xff54
 # define XK_KP_PageUp					0xff55
 # define XK_KP_PageDown					0xff56
+# define XK_KP_Esc						0xff1b
 
 
 # define BLACK			0x000000
@@ -71,10 +76,6 @@
 # define R_CLICK		0x3
 # define SCROLL_UP		0x4
 # define SCROLL_DOWN	0x5
-
-# define HALF_PI		0x1.921fb54442d18p+0
-# define PI				0x1.921fb54442d18p+1
-# define TAU 			0x1.921fb54442d18p+2
 
 typedef struct	s_gridpoint
 {
@@ -107,12 +108,17 @@ typedef struct	s_edge
 	t_vertex		*vtx_to;
 }				t_edge;
 
+/*
+** _trans is offset so that the map is centered in (0,0,0) 
+*/
 typedef struct	s_fdf
 {
 	int				vtx_lst_len;
 	int				edge_lst_len;
 	t_vertex		*vtx_lst;
 	t_edge			*edge_lst;
+	int				w_trans;
+	int				h_trans;
 }				t_fdf;
 
 typedef struct	s_camera

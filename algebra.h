@@ -17,6 +17,10 @@
 # include <unistd.h>
 # include "libft/hdr/libft_math.h"
 
+# define HALF_PI		0x1.921fb54442d18p+0
+# define PI				0x1.921fb54442d18p+1
+# define TAU 			0x1.921fb54442d18p+2
+
 typedef t_f32			t_float;
 
 # define T_VEC3_SIZE		12
@@ -86,6 +90,20 @@ void		vec3_cross(t_vec_3d result, t_vec_3d const v1, t_vec_3d const v2);
 
 void		vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src);
 void		vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src);
+
+
+void			mat33_set(t_mat_3b3 result, t_vec_3d const v0,
+							t_vec_3d const v1, t_vec_3d const v2);
+void			mat33_add(t_mat_3b3 result,
+							t_mat_3b3 const ma, t_mat_3b3 const mb);
+void			mat33_scale(t_mat_3b3 result, t_mat_3b3 const m, t_float s);
+void			mat33_app_vec(t_vec_3d result,
+								t_mat_3b3 const m, t_vec_3d const v);
+void			mat33_mul(t_mat_3b3 result,
+							t_mat_3b3 const ma, t_mat_3b3 const mb);
+t_float			mat33_det(t_mat_3b3 const m);
+void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m);
+
 
 void			mat44_add(t_mat_4b4 result, t_mat_4b4 ma, t_mat_4b4 mb);
 void			mat44_scale(t_mat_4b4 result, t_mat_4b4 m, t_float s);

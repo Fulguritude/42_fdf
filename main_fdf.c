@@ -99,17 +99,12 @@ printf("\tworld pos : (%f, %f, %f)\n", result.world_pos[0], result.world_pos[1],
 
 printf("\tworld pos : (%f, %f, %f)\n", result.world_pos[0], result.world_pos[1], result.world_pos[2]);
 	vec3_sub(result.axis_x, result.world_pos, result.anchor);
-	vec3_normalize(result.axis_x, result.axis_x);
-/*	if (ft_abs(result.axis_x[0]) < 0.001)
-		result.axis_x[0] = 0.001;
-	if (ft_abs(result.axis_x[1]) < 0.001)
-		result.axis_x[1] = 0.001;
-*/
-	vec3_set(result.axis_z, 0., 0., 1.);
+//	vec3_normalize(result.axis_x, result.axis_x);
+	vec3_set(result.axis_z, 0., 0., -1.);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
-	vec3_normalize(result.axis_y, result.axis_y);
+//	vec3_normalize(result.axis_y, result.axis_y);
 	vec3_cross(result.axis_z, result.axis_x, result.axis_y);
-	vec3_normalize(result.axis_z, result.axis_z);
+//	vec3_normalize(result.axis_z, result.axis_z);
 	return (result);
 }
 
@@ -132,7 +127,7 @@ int				main(int argc, char **argv)
 										&(ctrl.img_bpl), &(ctrl.endian));
 	ctrl.img_bpp = ctrl.img_bpp / 8;
 	ctrl.img_bytelen = ctrl.img_bpp * REN_HEIGHT * REN_WIDTH;
-	vec3_set(init_polar_cam_pos, 40., PI / 4., PI / 4.);
+	vec3_set(init_polar_cam_pos, 2., PI / 4., PI / 4.);
 	ctrl.fdf = init_fdf(argv[1]);
 	ctrl.cam = init_cam(init_polar_cam_pos);
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);

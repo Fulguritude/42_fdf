@@ -24,14 +24,10 @@ static void		build_all_edge_pairs(t_fdf *fdf, int line_nb, int line_size)
 	t_edge		*result;
 	int			k;
 	int			i;
-//	int			j;
 	t_edge		tmp;
 
-//printf("\tedge_pairs\n");
 	fdf->vtx_lst_len = line_nb * line_size;
 	if (!(result = malloc(sizeof(t_edge) * (fdf->vtx_lst_len * 2 - line_nb - line_size))))
-//	if (!(result = malloc(sizeof(t_edge) * ((line_nb - 1) +
-//			(line_size - 1) + 2 * (line_nb - 1) * (line_size - 1)))))
 		exit_error("malloc failure in build_edges", errno);
 	k = -1;
 	i = -1;
@@ -57,7 +53,6 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 {
 	t_fdf		fdf;
 	t_u32		min_line_size;
-//	t_vec_3d	tmp;
 	int			i;
 	int			j;
 
@@ -77,7 +72,9 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 		while (++j < (t_float)min_line_size)
 		{
 //printf("\t\tloop %d, %d, %d\n", (int)tmp[0], (int)tmp[1], (int)tmp[2]);
-			vec3_set(fdf.vtx_lst[i * min_line_size + j].world_pos, j, i, (t_float)ft_atoi(file_data[i][j]) / 10.);
+			vec3_set(fdf.vtx_lst[i * min_line_size + j].world_pos,
+					(t_float)j - min_line_size / 2., (t_float)i - line_nb / 2., 
+					(t_float)ft_atoi(file_data[i][j]) / 10.);
 		}
 	}
 	fdf.vtx_lst_len = line_nb * min_line_size;
