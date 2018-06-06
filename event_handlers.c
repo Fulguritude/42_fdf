@@ -24,8 +24,14 @@ int		handle_key(int key, void *param)
 	printf("key: %d, %x, %p;\n", key, key, param);
 	if (key == XK_KP_Space)
 	{
-		printf("sending window to null:\n");
-		mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
+		printf("toggling proj:\n");
+		if (ctrl->proj == &topdown_proj)
+			ctrl->proj = orthogonal_proj;
+		else if (ctrl->proj == &orthogonal_proj)
+			ctrl->proj = isometric_proj;
+		else
+			ctrl->proj = topdown_proj;
+//		return (0);
 	}
 	else if (key == XK_KP_Left)
 	{
@@ -65,9 +71,13 @@ int		handle_key(int key, void *param)
 	}
 	else if (key == XK_KP_Esc)
 		exit_error("Software closing.\n", 0);
+
 	vec3_polar_to_cartesian(ctrl->cam.world_pos, ctrl->cam.polar_pos);
 	vec3_add(ctrl->cam.world_pos, ctrl->cam.world_pos, ctrl->cam.anchor);
 	ctrl->cam = init_cam(ctrl->cam.polar_pos);
+//printf("\tevent cam axis_x : (%f, %f, %f)\n", ctrl->cam.axis_x[0], ctrl->cam.axis_x[1], ctrl->cam.axis_x[2]);
+//printf("\tevent cam axis_y : (%f, %f, %f)\n", ctrl->cam.axis_y[0], ctrl->cam.axis_y[1], ctrl->cam.axis_y[2]);
+//printf("\tevent cam axis_z : (%f, %f, %f)\n", ctrl->cam.axis_z[0], ctrl->cam.axis_z[1], ctrl->cam.axis_z[2]);
 	mlximg_clear(ctrl);
 	handle_redraw(param);
 
@@ -142,14 +152,14 @@ printf("\tcam mat transpose\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\
 		//make one single obj to proj matrix rather than these steps
 		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
 		tmp[3] = 1.;
-printf("\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
+//printf("\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
-printf("\t--cam->\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
+//printf("\t--cam->\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);
 //vec3_cpy(tmp, ctrl->fdf.vtx_lst[i].view_pos);
-printf("\t--sub w_to_v[12:16[->\t(%7.3g, %7.3g, %7.3g, %7.3g)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
+//printf("\t--sub w_to_v[12:16[->\t(%7.3g, %7.3g, %7.3g, %7.3g)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
 vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10., ctrl->fdf.vtx_lst[i].view_pos);
-		ctrl->fdf.vtx_lst[i].proj_pos = isometric_proj((t_float *)(ctrl->fdf.vtx_lst[i].view_pos));
+		ctrl->fdf.vtx_lst[i].proj_pos = ctrl->proj((t_float *)(ctrl->fdf.vtx_lst[i].view_pos));
 	}
 
 	t_gridpoint 	vtx1_pixmap_pos;

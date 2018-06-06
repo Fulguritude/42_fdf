@@ -144,6 +144,7 @@ typedef struct	s_control
 	void			*mlx_ptr;
 	void			*win_ptr;
 	void			*img_ptr;
+	t_gridpoint		(*proj)(t_vec_3d const v);
 	int				img_bpp;
 	int				img_bpl;
 	int				img_bytelen;
@@ -170,8 +171,9 @@ void			mlximg_clear(t_control *ctrl);
 void			exit_error(char *e_msg, int e_no);
 
 
-void			cam_to_mat(t_mat_4b4 result, t_camera cam);
-t_gridpoint		orthogonal_proj(t_vec_3d v);
-t_gridpoint		isometric_proj(t_vec_3d v);
+void			cam_to_mat(t_mat_4b4 result, t_camera const cam);
+t_gridpoint		orthogonal_proj(t_vec_3d const v);
+t_gridpoint		isometric_proj(t_vec_3d const v);
+t_gridpoint		topdown_proj(t_vec_3d const v);
 
 #endif

@@ -105,8 +105,15 @@ printf("\tcam axis_x : (%f, %f, %f)\n", result.axis_x[0], result.axis_x[1], resu
 	vec3_cross(result.axis_y, result.axis_z, result.axis_x);
 //	vec3_normalize(result.axis_y, result.axis_y);
 printf("\tcam axis_y : (%f, %f, %f)\n", result.axis_y[0], result.axis_y[1], result.axis_y[2]);
-	vec3_cross(result.axis_z, result.axis_x, result.axis_y);
+	vec3_cross(result.axis_z, result.axis_y, result.axis_x);
 //	vec3_normalize(result.axis_z, result.axis_z);
+printf("\tcam axis_z : (%f, %f, %f)\n", result.axis_z[0], result.axis_z[1], result.axis_z[2]);
+
+	vec3_scale(result.axis_x, result.polar_pos[0], result.axis_x);
+	vec3_scale(result.axis_y, result.polar_pos[0], result.axis_y);
+	vec3_scale(result.axis_z, result.polar_pos[0], result.axis_z);
+printf("\tcam axis_x : (%f, %f, %f)\n", result.axis_x[0], result.axis_x[1], result.axis_x[2]);
+printf("\tcam axis_y : (%f, %f, %f)\n", result.axis_y[0], result.axis_y[1], result.axis_y[2]);
 printf("\tcam axis_z : (%f, %f, %f)\n", result.axis_z[0], result.axis_z[1], result.axis_z[2]);
 
 	return (result);
@@ -134,6 +141,7 @@ int				main(int argc, char **argv)
 	vec3_set(init_polar_cam_pos, 2., 0., HALF_PI);//PI / 4., PI / 4.);
 	ctrl.fdf = init_fdf(argv[1]);
 	ctrl.cam = init_cam(init_polar_cam_pos);
+	ctrl.proj = &topdown_proj;
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
 	mlx_mouse_hook(ctrl.win_ptr, handle_mouse, &ctrl);
 	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
