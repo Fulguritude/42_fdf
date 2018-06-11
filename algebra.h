@@ -82,6 +82,7 @@ typedef t_quat	t_unit_quat;
 
 void		vec3_set(t_vec_3d result, t_float x, t_float y, t_float z);
 void		vec3_cpy(t_vec_3d dest, t_vec_3d const src);
+void		vec3_swap(t_vec_3d v1, t_vec_3d v2);
 void		vec3_add(t_vec_3d result, t_vec_3d const v1, t_vec_3d const v2);
 void		vec3_sub(t_vec_3d result, t_vec_3d const v1, t_vec_3d const v2);
 void		vec3_scale(t_vec_3d result, t_float const s, t_vec_3d const v);
@@ -104,12 +105,17 @@ void			mat33_mul(t_mat_3b3 result,
 							t_mat_3b3 const ma, t_mat_3b3 const mb);
 t_float			mat33_det(t_mat_3b3 const m);
 void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m);
+void			mat33_transpose(t_mat_3b3 result, t_mat_3b3 const src);
 
 
 void			mat44_add(t_mat_4b4 result, t_mat_4b4 const ma, t_mat_4b4 const mb);
 void			mat44_scale(t_mat_4b4 result, t_float const s, t_mat_4b4 const m);
 void			mat44_app_vec(t_vec_4d result, t_mat_4b4 const m, t_vec_4d const v);
 void			mat44_mul(t_mat_4b4 result, t_mat_4b4 const ma, t_mat_4b4 const mb);
+void			mat44_transpose(t_mat_4b4 result, t_mat_4b4 const m);
+void			mat44_subbloc33_ij(t_mat_3b3 result, t_mat_4b4 const m,
+									int i, int j);
+void			mat44_inv(t_mat_4b4 result, t_mat_4b4 const m);
 
 t_quat			hop_add(t_quat const q1, t_quat const q2);
 t_quat			hop_conjugate(t_quat const q);

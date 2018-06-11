@@ -41,8 +41,7 @@ TSTDIR	=	./tests/
 HDRS	=	fdf.h					\
 			algebra.h				\
 			get_next_line.h
-SRCS	=	main_fdf.c				\
-			get_next_line.c			\
+SRCS	=	get_next_line.c			\
 			reader_fdf.c			\
 			bresenham.c				\
 			quaternion_products.c	\
@@ -52,9 +51,17 @@ SRCS	=	main_fdf.c				\
 			mat33_op.c				\
 			mat44_op.c				\
 			coordinates.c			\
+			camera.c				\
 			projectors.c			\
 			color.c
 OBJS	=	$(SRCS:.c=.o)
+
+MAIN	=	main_fdf.c
+OBJ_MAIN=	$(MAIN:.c=.o)
+
+TST_DIR		=	unit_tests
+TST_MAIN	=	$(TST_DIR)/unit_tests.c
+TST_EXEC	=	test.out
 
 RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
@@ -62,10 +69,11 @@ GREEN	=	"\033[0;32m"
 
 $(NAME): $(LFTDIR)$(LFT) $(OBJS)
 	@printf "Compiling fdf: "$@" -> "$(RED)
+	@$(CC) $(CFLAGS) -c $(MAIN) -I$(HDRDIR)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
-$(OBJS): $(SRCS)	
+$(OBJS): $(SRCS)
 	@$(CC) $(CFLAGS) -c $(SRCS) -I$(HDRDIR)
 
 #dependencies are taken care of in libft's makefile.
@@ -76,7 +84,7 @@ all: $(NAME)
 
 clean:
 	#@$(MAKE) -C $(LFTDIR) clean
-	@rm -f $(OBJS)
+	@rm -f $(OBJS) $(OBJ_MAIN)
 
 fclean:clean
 	#@rm -f $(LFTDIR)$(LFT)
@@ -85,8 +93,10 @@ fclean:clean
 re:fclean all
 
 #remove CFLAGS below before testing weirder undefined printf cases
-test:$(NAME)
-	./$(NAME)
+test:$(LFTDIR)$(LFT) $(OBJS)
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(TST_MAIN) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $(TST_EXEC)
+	./$(TST_EXEC)
+	@rm -f $(TST_MAIN:.c=.o) $(TST_EXEC)
 
 mf_debug:
 	@cat -e -t -v Makefile

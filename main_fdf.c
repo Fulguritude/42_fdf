@@ -20,8 +20,8 @@
        mlx_string_put ( void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string );
 #endif
 
-
 //TODO loop_hook(void *param); //called when no event occurs
+
 
 
 void			exit_error(char *e_msg, int e_no)
@@ -31,92 +31,6 @@ void			exit_error(char *e_msg, int e_no)
 	else
 		perror(e_msg);
 	exit(e_no);
-}
-
-/*
-**
-	t_vec_3d	pos;
-	t_vec_3d	anchor;
-	t_vec_3d	axis_x; //right
-	t_vec_3d	axis_y; //up
-	t_vec_3d	axis_z; //forward input eye
-*/
-
-
-#if 0
-/*
-	vec3_set(result.pos, REN_WIDTH / 2, REN_HEIGHT / 2, 0);
-	vec3_normalize(result.pos, result.pos);
-*/
-//vec3_set(result.polar_pos, 40., PI / 4., PI / 4.);
-//vec3_polar_to_cartesian(result.pos, result.polar_pos);
-////vec3_normalize(result.pos, result.pos);
-
-	vec3_cpy(result.pos, polar_cam_pos);
-	vec3_set(result.anchor, 0., 0., 0.);
-	vec3_sub(result.axis_z, result.pos, result.anchor);
-	vec3_normalize(result.axis_z, result.axis_z);
-/*	if (ft_abs(result.axis_x[0]) < 0.001)
-		result.axis_x[0] = 0.001;
-	if (ft_abs(result.axis_x[1]) < 0.001)
-		result.axis_x[1] = 0.001;
-*/
-t_vec_3d	tmp;
-	vec3_set(tmp, 0., 1., 0.);
-	vec3_cross(result.axis_y, tmp, result.axis_z);
-	vec3_normalize(result.axis_y, result.axis_y);
-	vec3_cross(result.axis_y, result.axis_z, result.axis_x);
-//	vec3_normalize(result.axis_z, result.axis_z);
-	return (result);
-#endif
-
-# define INIT_CAM_POS_X	-30.0
-# define INIT_CAM_POS_Y	40.0
-# define INIT_CAM_POS_Z -20.0
-# define INIT_CAM_ANC_X	0.
-# define INIT_CAM_ANC_Y	0.
-# define INIT_CAM_ANC_Z	0.
-
-t_camera		init_cam(t_vec_3d polar_cam_pos)
-{
-	t_camera	result;
-
-/*
-	vec3_set(result.pos, REN_WIDTH / 2, REN_HEIGHT / 2, 0);
-	vec3_normalize(result.pos, result.pos);
-*/
-//vec3_set(result.polar_pos, 40., PI / 4., PI / 4.);
-//vec3_polar_to_cartesian(result.pos, result.polar_pos);
-////vec3_normalize(result.pos, result.pos);
-
-printf("init_cam:\n");
-printf("polar pos input: (%f, %f, %f)\n", polar_cam_pos[0], polar_cam_pos[1], polar_cam_pos[2]);
-	vec3_cpy(result.polar_pos, polar_cam_pos);
-	vec3_polar_to_cartesian(result.world_pos, polar_cam_pos);
-printf("\tcam world pos : (%f, %f, %f)\n", result.world_pos[0], result.world_pos[1], result.world_pos[2]);
-
-	vec3_set(result.anchor, 0., 0., 0.);
-
-printf("\tcam anchor pos : (%f, %f, %f)\n", result.anchor[0], result.anchor[1], result.anchor[2]);
-	vec3_sub(result.axis_x, result.world_pos, result.anchor);
-	vec3_normalize(result.axis_x, result.axis_x);
-printf("\tcam axis_x : (%f, %f, %f)\n", result.axis_x[0], result.axis_x[1], result.axis_x[2]);
-	vec3_set(result.axis_z, 0., 0., 1.);
-	vec3_cross(result.axis_y, result.axis_z, result.axis_x);
-//	vec3_normalize(result.axis_y, result.axis_y);
-printf("\tcam axis_y : (%f, %f, %f)\n", result.axis_y[0], result.axis_y[1], result.axis_y[2]);
-	vec3_cross(result.axis_z, result.axis_y, result.axis_x);
-//	vec3_normalize(result.axis_z, result.axis_z);
-printf("\tcam axis_z : (%f, %f, %f)\n", result.axis_z[0], result.axis_z[1], result.axis_z[2]);
-
-	vec3_scale(result.axis_x, result.polar_pos[0], result.axis_x);
-	vec3_scale(result.axis_y, result.polar_pos[0], result.axis_y);
-	vec3_scale(result.axis_z, result.polar_pos[0], result.axis_z);
-printf("\tcam axis_x : (%f, %f, %f)\n", result.axis_x[0], result.axis_x[1], result.axis_x[2]);
-printf("\tcam axis_y : (%f, %f, %f)\n", result.axis_y[0], result.axis_y[1], result.axis_y[2]);
-printf("\tcam axis_z : (%f, %f, %f)\n", result.axis_z[0], result.axis_z[1], result.axis_z[2]);
-
-	return (result);
 }
 
 /*

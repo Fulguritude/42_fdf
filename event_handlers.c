@@ -152,14 +152,15 @@ printf("\tcam mat transpose\n\t\t%.3f %.3f %.3f %.3f\n\t\t%.3f %.3f %.3f %.3f\n\
 		//make one single obj to proj matrix rather than these steps
 		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
 		tmp[3] = 1.;
-//printf("\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
+if (i == 104) printf("\t(%6.3f, %6.3f, %6.3f, %6.3f)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
-//printf("\t--cam->\t(%7.3g, %7.3g, %7.3g, %7.3g)", tmp[0], tmp[1], tmp[2], tmp[3]);
+if (i == 104) printf("\t--cam->\t(%6.3f, %6.3f, %6.3f, %6.3f)", tmp[0], tmp[1], tmp[2], tmp[3]);
 		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);
-//vec3_cpy(tmp, ctrl->fdf.vtx_lst[i].view_pos);
-//printf("\t--sub w_to_v[12:16[->\t(%7.3g, %7.3g, %7.3g, %7.3g)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
-vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10., ctrl->fdf.vtx_lst[i].view_pos);
+vec3_cpy(tmp, ctrl->fdf.vtx_lst[i].view_pos);
+if (i == 104) printf("\t--sub w_to_v[12:16[->\t(%6.3f, %6.3f, %6.3f, %6.3f)\n", tmp[0], tmp[1], tmp[2], tmp[3]);
+vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10. * ctrl->cam.polar_pos[0], ctrl->fdf.vtx_lst[i].view_pos);
 		ctrl->fdf.vtx_lst[i].proj_pos = ctrl->proj((t_float *)(ctrl->fdf.vtx_lst[i].view_pos));
+if (i == 104) printf("\t--proj_pos->\t(%d, %d)\n", ctrl->fdf.vtx_lst[i].proj_pos.x, ctrl->fdf.vtx_lst[i].proj_pos.y);
 	}
 
 	t_gridpoint 	vtx1_pixmap_pos;
@@ -170,12 +171,13 @@ printf("redraw2: %p\n", param);
 	while (++i < ctrl->fdf.edge_lst_len)
 	{
 		vtx1_pixmap_pos = ctrl->fdf.edge_lst[i].vtx_from->proj_pos;
+		vtx2_pixmap_pos = ctrl->fdf.edge_lst[i].vtx_to->proj_pos;
+if (i == 104) printf("\t(%d, %d) ; (%d, %d)\n", vtx1_pixmap_pos.x, vtx1_pixmap_pos.y, vtx2_pixmap_pos.x, vtx2_pixmap_pos.y);
 		vtx1_pixmap_pos.x += REN_WIDTH / 2;
 		vtx1_pixmap_pos.y += REN_HEIGHT / 2;
-		vtx2_pixmap_pos = ctrl->fdf.edge_lst[i].vtx_to->proj_pos;
 		vtx2_pixmap_pos.x += REN_WIDTH / 2;
 		vtx2_pixmap_pos.y += REN_HEIGHT / 2;
-//printf("\t(%d, %d) ; (%d, %d)\n", vtx1_pixmap_pos.x, vtx1_pixmap_pos.y, vtx2_pixmap_pos.x, vtx2_pixmap_pos.y);
+if (i == 104) printf("\t(%d, %d) ; (%d, %d)\n", vtx1_pixmap_pos.x, vtx1_pixmap_pos.y, vtx2_pixmap_pos.x, vtx2_pixmap_pos.y);
 		if (point_in_bounds(vtx1_pixmap_pos.x, vtx1_pixmap_pos.y) &&
 			point_in_bounds(vtx2_pixmap_pos.x, vtx2_pixmap_pos.y))
 		{
