@@ -14,6 +14,8 @@
 # define LIBFT_IO_H
 
 # include "libft.h"
+# include "get_next_line.h"
+# include "ft_printf.h"
 
 # define HEXCOLS	6
 

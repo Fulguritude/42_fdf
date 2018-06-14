@@ -12,7 +12,14 @@
 
 #include "fdf.h"
 
+inline int		point_in_bounds(int x, int y)
+{
+	return (0 <= x && x < REN_WIDTH &&
+			0 <= y && y < REN_HEIGHT);
+}
+
 static void		draw_vert(t_control *ctrl, t_gridpoint start, int endy)
+												//int endx, int endy)
 {
 	int		inc;
 	int		y;
@@ -34,6 +41,7 @@ static void		draw_vert(t_control *ctrl, t_gridpoint start, int endy)
 }
 
 static void		draw_horz(t_control *ctrl, t_gridpoint start, int endx)
+												//int endx, int endy)
 {
 	int		inc;
 	int		x;

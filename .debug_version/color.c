@@ -12,6 +12,9 @@
 
 #include "fdf.h"
 
+
+//	return (color.alpha << 24 | color.red << 16
+//			| color.green << 8 | color.blue);
 inline int		t_color_to_colorint(t_color color)
 {
 	return (*(int *)(&color));

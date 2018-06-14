@@ -39,15 +39,21 @@ LFTDIR	=	./libft/
 TSTDIR	=	./tests/
 
 HDRS	=	fdf.h					\
+			algebra.h				\
 			get_next_line.h
-SRCS	=	reader_fdf.c			\
+SRCS	=	get_next_line.c			\
+			reader_fdf.c			\
 			bresenham.c				\
+			quaternion_products.c	\
 			image_utils.c			\
 			event_handlers.c		\
+			vec3_op.c				\
+			mat33_op.c				\
+			mat44_op.c				\
+			coordinates.c			\
 			camera.c				\
 			projectors.c			\
-			color.c					\
-			coordinates.c
+			color.c
 OBJS	=	$(SRCS:.c=.o)
 
 MAIN	=	main_fdf.c
@@ -77,14 +83,16 @@ $(LFTDIR)$(LFT):
 all: $(NAME)
 
 clean:
+	#@$(MAKE) -C $(LFTDIR) clean
 	@rm -f $(OBJS) $(OBJ_MAIN)
 
 fclean:clean
-	@rm -f $(LFTDIR)$(LFT)
+	#@rm -f $(LFTDIR)$(LFT)
 	@rm -f $(NAME)
 
 re:fclean all
 
+#remove CFLAGS below before testing weirder undefined printf cases
 test:$(LFTDIR)$(LFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(TST_MAIN) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $(TST_EXEC)
 	./$(TST_EXEC)

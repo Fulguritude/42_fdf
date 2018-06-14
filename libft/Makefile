@@ -27,6 +27,8 @@ SRCDIR	:=	./src/
 SRCDIR_MEM	:= mem/
 
 SRCDIR_IO	:= io/
+SRCDIR_IO_PUT	:= put/
+SRCDIR_IO_PRNT	:= printf/
 
 SRCDIR_STR	:= str/
 SRCDIR_STR_CHR := char/
@@ -40,6 +42,7 @@ SRCDIR_MATH	:= math/
 SRCDIR_MATH_CNV := conv/
 SRCDIR_MATH_OP  := op/
 SRCDIR_MATH_APA := apa/
+SRCDIR_MATH_ALG := algebra/
 
 
 OBJDIR	:=	./obj/
@@ -48,6 +51,8 @@ TSTDIR	:=	../ #keep out of git bounds to avoid forbidden functions
 
 OBJDIRS	:=	$(OBJDIR) \
 			$(OBJDIR)$(SRCDIR_IO) \
+			$(OBJDIR)$(SRCDIR_IO)$(SRCDIR_IO_PUT) \
+			$(OBJDIR)$(SRCDIR_IO)$(SRCDIR_IO_PRNT) \
 			$(OBJDIR)$(SRCDIR_MEM) \
 			$(OBJDIR)$(SRCDIR_LST) \
 			$(OBJDIR)$(SRCDIR_STR) \
@@ -58,8 +63,8 @@ OBJDIRS	:=	$(OBJDIR) \
 			$(OBJDIR)$(SRCDIR_MATH) \
 			$(OBJDIR)$(SRCDIR_MATH)$(SRCDIR_MATH_CNV) \
 			$(OBJDIR)$(SRCDIR_MATH)$(SRCDIR_MATH_OP) \
-			$(OBJDIR)$(SRCDIR_MATH)$(SRCDIR_MATH_APA)
-
+			$(OBJDIR)$(SRCDIR_MATH)$(SRCDIR_MATH_APA) \
+			$(OBJDIR)$(SRCDIR_MATH)$(SRCDIR_MATH_ALG)
 
 
 HDRS	:=	libft.h						\
@@ -68,6 +73,7 @@ HDRS	:=	libft.h						\
 			libft_io.h					\
 			libft_str.h					\
 			libft_math.h				\
+			libft_algebra.h				\
 			libft_lst.h
 
 
@@ -199,7 +205,9 @@ SRC_LST_LST	:=	ft_lstnew.c					\
 
 SRC_LST	:=	$(addprefix $(SRCDIR_LST), $(SRC_LST_LST))
 
-SRC_IO_IO	:=	ft_putchar_fd.c				\
+SRC_IO_IO	:=	get_next_line.c
+
+SRC_IO_PUT	:=	ft_putchar_fd.c				\
 				ft_putstr_fd.c				\
 				ft_putendl_fd.c				\
 				ft_putnbr_fd.c				\
@@ -218,7 +226,21 @@ SRC_IO_IO	:=	ft_putchar_fd.c				\
 				ft_putnbr_lstelem_fd.c		\
 				ft_putnbr_lst_fd.c			
 
-SRC_IO	:=	$(addprefix $(SRCDIR_IO), $(SRC_IO_IO))
+SRC_IO_PRNT	:=	ft_printf.c					\
+				converters.c				\
+				converter_utils_rdfmt.c		\
+				utils_t_str.c				\
+				handlers.c					\
+				handler_utils_int.c			\
+				handler_utils_str.c			\
+				handler_utils_float.c		\
+				handler_utils_float_prec.c
+
+SRC_IO	:=	$(addprefix $(SRCDIR_IO), \
+				$(SRC_IO_IO) \
+				$(addprefix $(SRCDIR_IO_PUT), $(SRC_IO_PUT))	\
+				$(addprefix $(SRCDIR_IO_PRNT),$(SRC_IO_PRNT))	\
+			)
 
 SRC_MATH_CNV :=	ft_atoi.c					\
 				ft_itoa.c					\
@@ -284,10 +306,19 @@ SRC_MATH_APA :=	ft_vlqnew.c						\
 				#ft_vlq_bwa.c
 				#ft_vlq_bwo.c
 
+SRC_MATH_ALG := vec3.c					\
+				mat33.c					\
+				mat44.c					\
+				coordinates.c			\
+				vec3_op.c				\
+				mat33_op.c				\
+				mat44_op.c
+
 SRC_MATH:=	$(addprefix $(SRCDIR_MATH), \
 				$(addprefix $(SRCDIR_MATH_CNV),$(SRC_MATH_CNV))	\
-				$(addprefix $(SRCDIR_MATH_OP),$(SRC_MATH_OP))	\
+				$(addprefix $(SRCDIR_MATH_OP), $(SRC_MATH_OP))	\
 				$(addprefix $(SRCDIR_MATH_APA),$(SRC_MATH_APA))	\
+				$(addprefix $(SRCDIR_MATH_ALG),$(SRC_MATH_ALG))	\
 			)
 
 SRC_TMP	:=	ft_str_base_to_base_expn.c		\
@@ -324,18 +355,18 @@ $(NAME):$(OBJDIRS) $(addprefix $(OBJDIR)$,$(OBJS))
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJDIR)%.o:$(SRCDIR)%.c
-#	@printf "Compiling file: "$@" -> "$(RED)
+#@printf "Compiling file: "$@" -> "$(RED)
 	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR) -o $@
-#	@printf $(GREEN)"OK!"$(RESET)"\n"
+#@printf $(GREEN)"OK!"$(RESET)"\n"
 
 all: $(NAME)
 
 clean:
-#	@printf "Calling libft clean...\n"
+	@printf "Calling libft clean...\n"
 	@rm -f $(addprefix $(OBJDIR),$(OBJS))
 
 fclean: clean
-#	@printf "Calling libft fclean...\n"
+	@printf "Calling libft fclean...\n"
 	@rm -f $(NAME)
 
 re:fclean all

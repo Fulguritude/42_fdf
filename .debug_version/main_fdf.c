@@ -12,10 +12,17 @@
 
 #include "fdf.h"
 
-void			toggle_debug(t_control *ctrl)
-{
-	ctrl->debug = !(ctrl->debug);
-}
+#if 0
+       int
+       mlx_pixel_put ( void *mlx_ptr, void *win_ptr, int x, int y, int color );
+
+       int
+       mlx_string_put ( void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string );
+#endif
+
+//TODO loop_hook(void *param); //called when no event occurs
+
+
 
 void			exit_error(char *e_msg, int e_no)
 {
@@ -38,7 +45,6 @@ int				main(int argc, char **argv)
 
 	if (argc <= 1)
 		exit_error("usage: \"./fdf filepath/to/fdf/map.fdf\"\n", 0);
-	ctrl.debug = 0;
 	ctrl.mlx_ptr = mlx_init();
 	ctrl.win_ptr = mlx_new_window(ctrl.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "FdF");
 	ctrl.img_ptr = mlx_new_image(ctrl.mlx_ptr, REN_WIDTH, REN_HEIGHT);
@@ -46,13 +52,12 @@ int				main(int argc, char **argv)
 										&(ctrl.img_bpl), &(ctrl.endian));
 	ctrl.img_bpp = ctrl.img_bpp / 8;
 	ctrl.img_bytelen = ctrl.img_bpp * REN_HEIGHT * REN_WIDTH;
-	vec3_set(init_polar_cam_pos, 2., 0., HALF_PI);
+	vec3_set(init_polar_cam_pos, 2., 0., HALF_PI);//PI / 4., PI / 4.);
 	ctrl.fdf = init_fdf(argv[1]);
 	ctrl.cam = init_cam(init_polar_cam_pos);
-	ctrl.proj = &isometric_proj;
+	ctrl.proj = &topdown_proj;
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
 	mlx_mouse_hook(ctrl.win_ptr, handle_mouse, &ctrl);
 	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
 	mlx_loop(ctrl.mlx_ptr);
-	return (0);
 }

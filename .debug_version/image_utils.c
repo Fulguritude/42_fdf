@@ -19,18 +19,12 @@
 ** The following trick only works because img_bpp = 32 / 8 = 4
 */
 
-inline void		mlximg_setpixel(t_control *ctrl, int color, int x, int y)
+inline void	mlximg_setpixel(t_control *ctrl, int color, int x, int y)
 {
 	((t_u32 *)ctrl->img_data)[y * ctrl->img_bpl / 4 + x] = (t_u32)color;
 }
 
-inline void		mlximg_clear(t_control *ctrl)
+inline void	mlximg_clear(t_control *ctrl)
 {
 	ft_bzero(ctrl->img_data, ctrl->img_bytelen);
-}
-
-inline int		point_in_bounds(int x, int y)
-{
-	return (0 <= x && x < REN_WIDTH &&
-			0 <= y && y < REN_HEIGHT);
 }

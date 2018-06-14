@@ -13,9 +13,13 @@
 #ifndef FDF_H
 # define FDF_H
 
-/*
-** stdio contains perror
-*/
+//TODO remove
+# ifndef _GNU_SOURCE
+# define _GNU_SOURCE 1
+# endif
+
+# include <stdio.h>
+
 //# include <X11.h>
 # include "minilibx/mlx.h"
 # include <stdlib.h>
@@ -24,12 +28,10 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <stdio.h>
+# include "algebra.h"
 # include "libft/hdr/libft_mem.h"
-# include "libft/hdr/libft_algebra.h"
+# include "libft/hdr/libft_math.h"
 # include "libft/hdr/libft_str.h"
-# include "libft/hdr/get_next_line.h"
-# include "libft/hdr/ft_printf.h"
 
 //# define BIG_ENDIAN		1
 //# define LIT_ENDIAN		0
@@ -62,7 +64,6 @@
 # define XK_KP_PageUp					0xff55
 # define XK_KP_PageDown					0xff56
 # define XK_KP_Esc						0xff1b
-# define XK_KP_LCtrl					0xffe3
 
 
 # define BLACK			0x000000
@@ -125,24 +126,15 @@ typedef struct	s_fdf
 	int				h_trans;
 }				t_fdf;
 
-/*
-** world_pos; //cartesian coordinate of camera in world
-** reltv_pos; //cartesian coordinate of camera with anchor as center
-** polar_pos; //zoom/radius, longitude, latitude relative to anchor
-** anchor; //origin of polar_pos and reltv_pos
-** axis_x; //right
-** axis_y; //up
-** axis_z; //forward input eye
-*/
 typedef struct	s_camera
 {
-	t_vec_3d		world_pos;
-	t_vec_3d		reltv_pos;
-	t_vec_3d		polar_pos;
-	t_vec_3d		anchor;
-	t_vec_3d		axis_x;
-	t_vec_3d		axis_y;
-	t_vec_3d		axis_z;
+	t_vec_3d	world_pos; //cartesian coordinate of camera in world
+	t_vec_3d	reltv_pos; //cartesian coordinate of camera with anchor as center
+	t_vec_3d	polar_pos; //zoom/radius, longitude, latitude relative to anchor
+	t_vec_3d	anchor; //origin of polar_pos and reltv_pos
+	t_vec_3d	axis_x; //right
+	t_vec_3d	axis_y; //up
+	t_vec_3d	axis_z; //forward input eye
 }				t_camera;
 
 /*
@@ -163,7 +155,6 @@ typedef struct	s_control
 	int				img_bytelen;
 	int				endian;
 	char			*img_data;
-	int				debug;
 }				t_control;
 
 int				handle_key(int key, void *param);
@@ -171,6 +162,7 @@ int				handle_mouse(int button, int x, int y, void *param);
 int				handle_redraw(void *param);
 
 t_fdf			init_fdf(char *filepath);
+t_camera		init_cam(t_vec_3d polar_cam_pos);
 
 void			bresenham(t_control *ctrl, t_gridpoint start, t_gridpoint end);
 
@@ -181,24 +173,12 @@ int				point_in_bounds(int x, int y);
 void			mlximg_setpixel(t_control *ctrl, int color, int x, int y);
 void			mlximg_clear(t_control *ctrl);
 
-/*
-** camera.c
-*/
-t_camera		init_cam(t_vec_3d polar_cam_pos);
-void			cam_to_mat(t_mat_4b4 result, t_camera const cam);
-
-/*
-** Debug n error in main_fdf.c
-*/
-void			toggle_debug(t_control *ctrl);
 void			exit_error(char *e_msg, int e_no);
 
-/*
-** projectors.c
-*/
+
+void			cam_to_mat(t_mat_4b4 result, t_camera const cam);
 t_gridpoint		orthogonal_proj(t_vec_3d const v);
 t_gridpoint		isometric_proj(t_vec_3d const v);
 t_gridpoint		topdown_proj(t_vec_3d const v);
-void			toggle_proj(t_control *ctrl);
 
 #endif
