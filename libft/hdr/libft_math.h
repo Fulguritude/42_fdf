@@ -222,4 +222,10 @@ t_u8					ft_is_valid_nbstr_in_base(char const *nbstr,
 */
 int						ft_in_base(char c, char const *base);
 
+/*
+** Returns an approximation of the inverse square root of a number.
+** More precision can be had with 1./sqrt() if necessary.
+*/
+t_f32					ft_fast_inv_sqrt32(t_f32 const f);
+
 #endif
