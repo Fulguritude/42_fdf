@@ -31,6 +31,22 @@ void			exit_error(char *e_msg, int e_no)
 ** bytes per pixel.
 */
 
+static void		init_mlx(t_control *ctrl)
+{
+	if (!(ctrl->mlx_ptr = mlx_init()))
+		exit_error("could not init mlx_ptr", 0);
+	if (!(ctrl->win_ptr = mlx_new_window(ctrl->mlx_ptr,
+				WIN_WIDTH, WIN_HEIGHT, "FdF")))
+		exit_error("could not init win_ptr", 0);
+	if (!(ctrl->img_ptr = mlx_new_image(ctrl->mlx_ptr, REN_WIDTH, REN_HEIGHT)))
+		exit_error("could not init img_ptr", 0);
+	if (!(ctrl->img_data = mlx_get_data_addr(ctrl->img_ptr, &(ctrl->img_bpp),
+										&(ctrl->img_bpl), &(ctrl->endian))))
+		exit_error("could not retrieve img data ptr and other info", 0);
+	ctrl->img_bpp = ctrl->img_bpp / 8;
+	ctrl->img_bytelen = ctrl->img_bpp * REN_HEIGHT * REN_WIDTH;
+}
+
 int				main(int argc, char **argv)
 {
 	t_control	ctrl;
@@ -38,16 +54,10 @@ int				main(int argc, char **argv)
 
 	if (argc <= 1)
 		exit_error("usage: \"./fdf filepath/to/fdf/map.fdf\"\n", 0);
+	init_mlx(&ctrl);
 	ctrl.debug = 0;
-	ctrl.mlx_ptr = mlx_init();
-	ctrl.win_ptr = mlx_new_window(ctrl.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "FdF");
-	ctrl.img_ptr = mlx_new_image(ctrl.mlx_ptr, REN_WIDTH, REN_HEIGHT);
-	ctrl.img_data = mlx_get_data_addr(ctrl.img_ptr, &(ctrl.img_bpp),
-										&(ctrl.img_bpl), &(ctrl.endian));
-	ctrl.img_bpp = ctrl.img_bpp / 8;
-	ctrl.img_bytelen = ctrl.img_bpp * REN_HEIGHT * REN_WIDTH;
-	vec3_set(init_polar_cam_pos, 2., 0., HALF_PI);
 	ctrl.fdf = init_fdf(argv[1]);
+	vec3_set(init_polar_cam_pos, 2., 0., HALF_PI);
 	ctrl.cam = init_cam(init_polar_cam_pos);
 	ctrl.proj = &isometric_proj;
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
