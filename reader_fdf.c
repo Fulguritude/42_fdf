@@ -90,7 +90,7 @@ t_fdf			init_fdf(char *line)
 	int		line_nb;
 
 	if ((fd = open(line, O_RDONLY)) == -1)
-		exit_error("call to open failed", errno);
+		exit_error("call to std open failed", errno);
 	line_nb = -1;
 	while ((status = get_next_line(fd, &line)) != EOF_RD)
 	{
@@ -102,5 +102,7 @@ t_fdf			init_fdf(char *line)
 	fdf = build_fdf(file_data, ++line_nb);
 	while (--line_nb >= 0)
 		ft_strlsdel(&(file_data[line_nb]));
+	if (close(fd) == -1)
+		exit_error("call to std close failed", errno);
 	return (fdf);
 }
