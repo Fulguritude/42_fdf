@@ -311,7 +311,6 @@ SRC_MATH_APA :=	ft_vlqnew.c						\
 SRC_MATH_ALG := vec3.c					\
 				mat33.c					\
 				mat44.c					\
-				coordinates.c			\
 				vec3_op.c				\
 				mat33_op.c				\
 				mat44_op.c

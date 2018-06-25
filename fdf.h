@@ -17,7 +17,7 @@
 ** stdio contains perror
 */
 //# include <X11.h>
-# include "minilibx/mlx.h"
+# include <mlx.h>
 # include <stdlib.h>
 # include <errno.h>
 # include <unistd.h>
