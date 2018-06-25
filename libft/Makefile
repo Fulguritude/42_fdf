@@ -143,6 +143,7 @@ SRC_STR_STR	:=	ft_strlen.c					\
 				ft_strreplace.c				\
 				ft_str_toprint.c			\
 				ft_str_countchar.c			\
+				ft_str_containsonly.c		\
 				ft_striter.c				\
 				ft_striteri.c				\
 				ft_strmap.c					\

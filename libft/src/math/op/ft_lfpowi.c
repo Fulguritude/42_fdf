@@ -15,20 +15,18 @@
 double		ft_lfpowi(double lf, int power)
 {
 	int			i;
-	double		result;
+	double		tmp;
 
-	result = 1.;
-	i = 0;
-	if (power == 0)
-		return (result);
-	else if (power > 0)
-		while (++i <= power)
-			result *= lf;
+	if (y == 0)
+	   return (1.);
+	tmp = ft_lfpowi(x, y / 2);
+	if (y % 2 == 0)
+		return (tmp * tmp);
 	else
 	{
-		power = -power;
-		while (++i <= power)
-			result /= lf;
+		if (y > 0)
+			return (x * tmp * tmp);
+		else
+			return (tmp * tmp / x);
 	}
-	return (result);
 }

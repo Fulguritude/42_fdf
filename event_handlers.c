@@ -43,9 +43,9 @@ int		handle_key(int key, void *param)
 	if (key == XK_KP_Space || key == XK_KP_LCtrl)
 		key == XK_KP_Space ? toggle_proj(ctrl) : toggle_debug(ctrl);
 	else if (key == XK_KP_Left)
-		ctrl->cam.polar_pos[1] -= 0.2;// + TAU * (ctrl->cam.polar_pos[1] < 0.2);
+		ctrl->cam.polar_pos[1] -= 0.2;
 	else if (key == XK_KP_Right)
-		ctrl->cam.polar_pos[1] += 0.2;// - TAU * (ctrl->cam.polar_pos[1] + 0.2 > TAU);
+		ctrl->cam.polar_pos[1] += 0.2;
 	else if (key == XK_KP_Down && ctrl->cam.polar_pos[2] - 0.1 > 0)
 		ctrl->cam.polar_pos[2] -= 0.1;
 	else if (key == XK_KP_Up && ctrl->cam.polar_pos[2] + 0.1 < PI)

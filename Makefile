@@ -18,8 +18,8 @@ PLATFORM=	LINUX
 CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 
-MLX		=	libmlx_$(PLATFORM).a
-
+#LMLX		=	libmlx_$(PLATFORM).a
+LOC_LMLX	=	./
 
 ifeq ($(PLATFORM),LINUX)
 DBFLAGS =	-fsanitize=address
@@ -64,11 +64,11 @@ GREEN	=	"\033[0;32m"
 $(NAME): $(LFTDIR)$(LFT) $(OBJS)
 	@printf "Compiling fdf: "$@" -> "$(RED)
 	@$(CC) $(CFLAGS) -c $(MAIN) -I$(HDRDIR)
-	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $@
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBASAN) -lm -L$(LOC_LMLX) -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L$(LOC_LX) -lX11 -lXext -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
-$(OBJS): $(SRCS)
-	@$(CC) $(CFLAGS) -c $(SRCS) -I$(HDRDIR)
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR)
 
 #dependencies are taken care of in libft's makefile.
 $(LFTDIR)$(LFT):
