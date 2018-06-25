@@ -14,19 +14,18 @@
 
 double		ft_lfpowi(double lf, int power)
 {
-	int			i;
 	double		tmp;
 
-	if (y == 0)
+	if (power == 0)
 	   return (1.);
-	tmp = ft_lfpowi(x, y / 2);
-	if (y % 2 == 0)
+	tmp = ft_lfpowi(lf, power / 2);
+	if (power % 2 == 0)
 		return (tmp * tmp);
 	else
 	{
-		if (y > 0)
-			return (x * tmp * tmp);
+		if (power > 0)
+			return (lf * tmp * tmp);
 		else
-			return (tmp * tmp / x);
+			return (tmp * tmp / lf);
 	}
 }
