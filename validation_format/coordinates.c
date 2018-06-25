@@ -29,7 +29,7 @@ void		vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src)
 */
 
 void		vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src)
-{	
+{
 	t_float		r;
 	t_float		x;
 	t_float		lat;

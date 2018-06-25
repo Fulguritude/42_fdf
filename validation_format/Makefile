@@ -14,7 +14,7 @@ NAME	=	fdf
 LFT		=	libft.a
 
 
-PLATFORM=	MAC_OS
+PLATFORM=	LINUX
 CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 
@@ -25,7 +25,7 @@ DBFLAGS =	-fsanitize=address
 LIBASAN =	-lasan
 LOC_LX	=	/usr/lib/x86_64-linux-gnu/
 LIB_SUFF=	_Linux
-LOC_LMLX=	./
+LOC_LMLX=	../
 LIBS	=	$(LIBASAN) -lm -L$(LOC_LMLX) -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L$(LOC_LX) -lX11 -lXext
 else
 DBFLAGS =	

@@ -69,11 +69,12 @@ static t_fdf	build_fdf(char **file_data[MAX_LINE_NB], int line_nb)
 		j = -1;
 		while (++j < (t_float)min_line_size)
 			vec3_set(fdf.vtx_lst[i * min_line_size + j].world_pos,
-					(t_float)j - min_line_size / 2., (t_float)i - line_nb / 2., 
+					(t_float)j - min_line_size / 2., (t_float)i - line_nb / 2.,
 					(t_float)ft_atoi(file_data[i][j]) / 10.);
 	}
 	fdf.vtx_lst_len = line_nb * min_line_size;
 	build_all_edge_pairs(&fdf, line_nb, min_line_size);
+	fdf.h_scale = INIT_H_SCALE;
 	return (fdf);
 }
 

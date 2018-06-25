@@ -16,7 +16,6 @@
 /*
 ** stdio contains perror
 */
-//# include <X11.h>
 # include <mlx.h>
 # include <stdlib.h>
 # include <errno.h>
@@ -31,9 +30,6 @@
 # include "libft/hdr/get_next_line.h"
 # include "libft/hdr/ft_printf.h"
 
-//# define BIG_ENDIAN		1
-//# define LIT_ENDIAN		0
-
 # define MAX_LINE_SIZE	4096
 # define MAX_LINE_NB	4096
 
@@ -44,26 +40,118 @@
 # define HALF_DRENWIN_WIDTH		100
 # define HALF_DRENWIN_HEIGHT	100
 
-//for keypad int codes /usr/include/X11/keysymdef.h
-//# define XK_KP_Space                      0xff80
-# define XK_KP_Space                      0x0020
-# define XK_KP_Tab                        0xff89
-# define XK_KP_Enter                      0xff8d
 /*
-# define XK_KP_Left                       0xff96
-# define XK_KP_Up                         0xff97
-# define XK_KP_Right                      0xff98
-# define XK_KP_Down                       0xff99
+** for keypad int codes /usr/include/X11/keysymdef.h
 */
-# define XK_KP_Left						0xff51
-# define XK_KP_Up						0xff52
-# define XK_KP_Right					0xff53
-# define XK_KP_Down						0xff54
-# define XK_KP_PageUp					0xff55
-# define XK_KP_PageDown					0xff56
-# define XK_KP_Esc						0xff1b
-# define XK_KP_LCtrl					0xffe3
 
+# define LINUX		0
+# define MACOS		1
+
+# define PLATFORM	LINUX
+
+
+#if PLATFORM
+# define L_CLICK		0x1
+# define R_CLICK		0x2
+# define SCROLL_UP		0x4
+# define SCROLL_DOWN	0x5
+
+# define KEY_ESC		0x35
+# define KEY_SPACE		0x31
+# define KEY_LCTRL		0x3B
+
+# define KEY_LEFT		0x7B
+# define KEY_RIGHT		0x7C
+# define KEY_DOWN		0x7D
+# define KEY_UP			0x7E
+# define KEY_PAGE_UP	0x74
+# define KEY_PAGE_DN	0x79
+
+# define KEY_HOME		0x73
+# define KEY_END		0x77
+# define KEY_HELP		0x72
+# define KEY_DELETE		0x75
+
+# define KEY_NUMPAD_0			0x52
+# define KEY_NUMPAD_1			0x53
+# define KEY_NUMPAD_2			0x54
+# define KEY_NUMPAD_3			0x55
+# define KEY_NUMPAD_4			0x56
+# define KEY_NUMPAD_5			0x57
+# define KEY_NUMPAD_6			0x58
+# define KEY_NUMPAD_7			0x59
+# define KEY_NUMPAD_8			0x5B
+# define KEY_NUMPAD_9			0x5C
+# define KEY_NUMPAD_PERIOD		0x41
+# define KEY_NUMPAD_ENTER		0x4C
+# define KEY_NUMPAD_ADD			0x45
+# define KEY_NUMPAD_SUB			0x4E
+# define KEY_NUMPAD_MUL			0x43
+# define KEY_NUMPAD_DIV			0x4B
+# define KEY_NUMPAD_CLEAR		0x47
+# define KEY_NUMPAD_EQUALS		0x51
+
+
+#else
+/*
+**# define XK_KP_Space					0x0020
+**# define XK_KP_Tab						0xff89 //?
+**# define XK_KP_Enter					0xff8d
+**# define XK_KP_Left						0xff51
+**# define XK_KP_Up						0xff52
+**# define XK_KP_Right					0xff53
+**# define XK_KP_Down						0xff54
+**# define XK_KP_PageUp					0xff55
+**# define XK_KP_PageDown					0xff56
+**# define XK_KP_Esc						0xff1b
+**# define XK_KP_LCtrl					0xffe3
+*/
+# define L_CLICK		0x1
+# define M_CLICK		0x2
+# define R_CLICK		0x3
+# define SCROLL_UP		0x4
+# define SCROLL_DOWN	0x5
+
+# define KEY_ESC		0xFF1B
+# define KEY_SPACE		0x0020
+# define KEY_LCTRL		0xFFE3
+
+# define KEY_LEFT		0xFF51
+# define KEY_UP			0xFF52
+# define KEY_RIGHT		0xFF53
+# define KEY_DOWN		0xFF54
+# define KEY_PAGE_UP	0xFF55
+# define KEY_PAGE_DN	0xFF56
+
+# define KEY_HOME		0xFF50
+# define KEY_END		0xFF57
+# define KEY_INSERT		0xFF63
+# define KEY_DELETE		0xFFFF
+
+# define KEY_NUMPAD_0		0xFF9E
+# define KEY_NUMPAD_1		0xFF9C
+# define KEY_NUMPAD_2		0xFF99
+# define KEY_NUMPAD_3		0xFF9B
+# define KEY_NUMPAD_4		0xFF96
+# define KEY_NUMPAD_5		0xFF9D
+# define KEY_NUMPAD_6		0xFF98
+# define KEY_NUMPAD_7		0xFF95
+# define KEY_NUMPAD_8		0xFF97
+# define KEY_NUMPAD_9		0xFF9A
+# define KEY_NUMPAD_PERIOD	0xFF9F
+# define KEY_NUMPAD_ENTER	0xFF8D
+# define KEY_NUMPAD_ADD		0xFFAB
+# define KEY_NUMPAD_SUB		0xFFAD
+# define KEY_NUMPAD_MUL		0xFFAA
+# define KEY_NUMPAD_DIV		0xFFAF
+
+#endif
+
+
+# define PROJ_CST1		0.5
+# define PROJ_CST1_HLF	0.25
+# define PROJ_CST2		0.6
+# define PROJ_CST2_HLF	0.3
 
 # define BLACK			0x000000
 # define RED			0xFF0000
@@ -71,15 +159,7 @@
 # define BLUE			0x0000FF
 # define WHITE			0xFFFFFF
 
-# define L_CLICK		0x1
-# define R_CLICK		0x3
-# define SCROLL_UP		0x4
-# define SCROLL_DOWN	0x5
-
-# define PROJ_CST1		0.5
-# define PROJ_CST1_HLF	0.25
-# define PROJ_CST2		0.6
-# define PROJ_CST2_HLF	0.3
+# define INIT_H_SCALE	1.
 
 typedef struct	s_color
 {
@@ -113,7 +193,7 @@ typedef struct	s_edge
 }				t_edge;
 
 /*
-** _trans is offset so that the map is centered in (0,0,0) 
+** _trans is offset so that the map is centered in (0,0,0)
 */
 typedef struct	s_fdf
 {
@@ -123,6 +203,7 @@ typedef struct	s_fdf
 	t_edge			*edge_lst;
 	int				w_trans;
 	int				h_trans;
+	t_float			h_scale;
 }				t_fdf;
 
 /*
@@ -166,17 +247,32 @@ typedef struct	s_control
 	int				debug;
 }				t_control;
 
+/*
+** event_handlers.c
+*/
 int				handle_key(int key, void *param);
 int				handle_mouse(int button, int x, int y, void *param);
 int				handle_redraw(void *param);
 
+/*
+** reader_fdf.c
+*/
 t_fdf			init_fdf(char *filepath);
 
+/*
+** bresenham.c
+*/
 void			bresenham(t_control *ctrl, t_gridpoint start, t_gridpoint end);
 
+/*
+** color.c
+*/
 int				t_color_to_colorint(t_color color);
 t_color			new_color(t_u8 alpha, t_u8 red, t_u8 green, t_u8 blue);
 
+/*
+** image_utils.c
+*/
 int				point_in_bounds(int x, int y);
 void			mlximg_setpixel(t_control *ctrl, int color, int x, int y);
 void			mlximg_clear(t_control *ctrl);
@@ -188,10 +284,11 @@ t_camera		init_cam(t_vec_3d polar_cam_pos);
 void			cam_to_mat(t_mat_4b4 result, t_camera const cam);
 
 /*
-** Debug n error in main_fdf.c
+** main_fdf.c
 */
 void			toggle_debug(t_control *ctrl);
 void			exit_error(char *e_msg, int e_no);
+void			show_debug_info(t_control *ctrl);
 
 /*
 ** projectors.c
@@ -200,5 +297,11 @@ t_gridpoint		orthogonal_proj(t_vec_3d const v);
 t_gridpoint		isometric_proj(t_vec_3d const v);
 t_gridpoint		topdown_proj(t_vec_3d const v);
 void			toggle_proj(t_control *ctrl);
+
+/*
+** coordinates.c
+*/
+void			vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src);
+void			vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src);
 
 #endif

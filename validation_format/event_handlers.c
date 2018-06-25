@@ -12,50 +12,43 @@
 
 #include "fdf.h"
 
-static void		show_cam_pos_info(t_control *ctrl)
-{
-	char *str;
-
-	str = NULL;
-	ft_asprintf(&str, "zoom: %.4f", ctrl->cam.polar_pos[0]);
-	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
-		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 20, WHITE, str);
-	free(str);
-	ft_asprintf(&str, "lon: %.4f", ctrl->cam.polar_pos[1]);
-	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
-		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 40, WHITE, str);
-	free(str);
-	ft_asprintf(&str, "lat: %.4f", ctrl->cam.polar_pos[2]);
-	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
-		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 60, WHITE, str);
-	free(str);
-}
-
 /*
 ** "Key hook"
 */
 
-int		handle_key(int key, void *param)
+static void		handle_resize_key(int key, t_control *ctrl)
+{
+	if (key == KEY_PAGE_DN)
+		ctrl->cam.polar_pos[0] *= 1.1;
+	else if (key == KEY_PAGE_UP)
+		ctrl->cam.polar_pos[0] *= 0.9;
+	else if (key == KEY_NUMPAD_ADD)
+		ctrl->fdf.h_scale += 0.5;
+	else if (key == KEY_NUMPAD_SUB)
+		ctrl->fdf.h_scale -= 0.5;
+}
+
+int				handle_key(int key, void *param)
 {
 	t_control	*ctrl;
 
 	ctrl = (t_control *)param;
-	if (key == XK_KP_Space || key == XK_KP_LCtrl)
-		key == XK_KP_Space ? toggle_proj(ctrl) : toggle_debug(ctrl);
-	else if (key == XK_KP_Left)
+	if (key == KEY_SPACE)
+		toggle_proj(ctrl);
+	else if (key == KEY_LCTRL)
+		toggle_debug(ctrl);
+	else if (key == KEY_LEFT)
 		ctrl->cam.polar_pos[1] -= 0.2;
-	else if (key == XK_KP_Right)
+	else if (key == KEY_RIGHT)
 		ctrl->cam.polar_pos[1] += 0.2;
-	else if (key == XK_KP_Down && ctrl->cam.polar_pos[2] - 0.1 > 0)
+	else if (key == KEY_DOWN && ctrl->cam.polar_pos[2] - 0.1 > 0)
 		ctrl->cam.polar_pos[2] -= 0.1;
-	else if (key == XK_KP_Up && ctrl->cam.polar_pos[2] + 0.1 < PI)
+	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < PI)
 		ctrl->cam.polar_pos[2] += 0.1;
-	else if (key == XK_KP_PageDown)
-		ctrl->cam.polar_pos[0] *= 1.1;
-	else if (key == XK_KP_PageUp)
-		ctrl->cam.polar_pos[0] *= 0.9;
-	else if (key == XK_KP_Esc)
+	else if (key == KEY_ESC)
 		exit_error("Software closing.\n", 0);
+	else
+		handle_resize_key(key, ctrl);
 	vec3_polar_to_cartesian(ctrl->cam.world_pos, ctrl->cam.polar_pos);
 	vec3_add(ctrl->cam.world_pos, ctrl->cam.world_pos, ctrl->cam.anchor);
 	ctrl->cam = init_cam(ctrl->cam.polar_pos);
@@ -67,7 +60,7 @@ int		handle_key(int key, void *param)
 ** "Mouse hook"
 */
 
-int		handle_mouse(int button, int x, int y, void *param)
+int				handle_mouse(int button, int x, int y, void *param)
 {
 	t_control			*ctrl;
 	static int			click_nb = -1;
@@ -98,10 +91,10 @@ int		handle_mouse(int button, int x, int y, void *param)
 ** "Expose hook"
 */
 
-static void	handle_redraw_helper(t_control *ctrl)
+static void		handle_redraw_helper(t_control *ctrl)
 {
-	t_gridpoint 	vtx1_pixmap_pos;
-	t_gridpoint 	vtx2_pixmap_pos;
+	t_gridpoint		vtx1_pixmap_pos;
+	t_gridpoint		vtx2_pixmap_pos;
 	int				i;
 
 	i = -1;
@@ -120,10 +113,10 @@ static void	handle_redraw_helper(t_control *ctrl)
 	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr,
 							-HALF_DRENWIN_WIDTH, -HALF_DRENWIN_HEIGHT);
 	if (ctrl->debug)
-		show_cam_pos_info(ctrl);
+		show_debug_info(ctrl);
 }
 
-int			handle_redraw(void *param)
+int				handle_redraw(void *param)
 {
 	t_control	*ctrl;
 	t_mat_4b4	w_to_v;
@@ -137,6 +130,7 @@ int			handle_redraw(void *param)
 	while (++i < ctrl->fdf.vtx_lst_len)
 	{
 		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
+		tmp[2] *= ctrl->fdf.h_scale;
 		tmp[3] = 1.;
 		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
 		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);

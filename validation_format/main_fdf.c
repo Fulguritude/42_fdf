@@ -26,6 +26,30 @@ void			exit_error(char *e_msg, int e_no)
 	exit(e_no);
 }
 
+void			show_debug_info(t_control *ctrl)
+{
+	char *str;
+
+	str = NULL;
+	ft_asprintf(&str, "zoom: %.4f", ctrl->cam.polar_pos[0]);
+	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
+		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 20, WHITE, str);
+	free(str);
+	ft_asprintf(&str, "lon: %.4f", ctrl->cam.polar_pos[1]);
+	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
+		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 40, WHITE, str);
+	free(str);
+	ft_asprintf(&str, "lat: %.4f", ctrl->cam.polar_pos[2]);
+	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
+		HALF_DRENWIN_WIDTH + 20, HALF_DRENWIN_HEIGHT + 60, WHITE, str);
+	free(str);
+	str = ctrl->proj == isometric_proj ? "isometric" : "error";
+	str = ctrl->proj == orthogonal_proj ? "orthogonal" : str;
+	str = ctrl->proj == topdown_proj ? "topdown" : str;
+	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr, HALF_DRENWIN_WIDTH + 20,
+		HALF_DRENWIN_HEIGHT + 80, GREEN, str);
+}
+
 /*
 ** Bits per pixel (32, each color is an int) are immediately converted to
 ** bytes per pixel.

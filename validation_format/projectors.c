@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 t_gridpoint		orthogonal_proj(t_vec_3d const v)
 {
@@ -39,7 +39,7 @@ t_gridpoint		topdown_proj(t_vec_3d const v)
 	return (res);
 }
 
-void		toggle_proj(t_control *ctrl)
+void			toggle_proj(t_control *ctrl)
 {
 	if (ctrl->proj == &isometric_proj)
 		ctrl->proj = orthogonal_proj;

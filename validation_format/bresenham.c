@@ -30,7 +30,7 @@ static void		draw_vert(t_control *ctrl, t_gridpoint start, int endy)
 		{
 			mlximg_setpixel(ctrl, RED, start.x, y);
 			y += inc;
-		}	
+		}
 }
 
 static void		draw_horz(t_control *ctrl, t_gridpoint start, int endx)
@@ -54,8 +54,8 @@ static void		draw_horz(t_control *ctrl, t_gridpoint start, int endx)
 		}
 }
 
-static void		draw_vertoct(t_control *ctrl, t_gridpoint start, 
-							 t_gridpoint end, t_gridpoint d)
+static void		draw_vertoct(t_control *ctrl, t_gridpoint start,
+							t_gridpoint end, t_gridpoint d)
 {
 	int		x;
 	int		y;
@@ -70,8 +70,8 @@ static void		draw_vertoct(t_control *ctrl, t_gridpoint start,
 	yinc = y < end.y ? 1 : -1;
 	while (y != end.y)
 	{
-	    acc_er += d.x;
-	    if (acc_er >= d.y)
+		acc_er += d.x;
+		if (acc_er >= d.y)
 		{
 			acc_er -= d.y;
 			x += xinc;
@@ -84,7 +84,7 @@ static void		draw_vertoct(t_control *ctrl, t_gridpoint start,
 }
 
 static void		draw_horzoct(t_control *ctrl, t_gridpoint start,
-							 t_gridpoint end, t_gridpoint d)
+							t_gridpoint end, t_gridpoint d)
 {
 	int		x;
 	int		y;
@@ -99,8 +99,8 @@ static void		draw_horzoct(t_control *ctrl, t_gridpoint start,
 	yinc = y < end.y ? 1 : -1;
 	while (x != end.x)
 	{
-	    acc_er += d.y;
-	    if (acc_er >= d.x)
+		acc_er += d.y;
+		if (acc_er >= d.x)
 		{
 			acc_er -= d.x;
 			y += yinc;
