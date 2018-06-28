@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 15:35:26 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/28 17:11:46 by tduquesn         ###   ########.fr       */
+/*   Updated: 2018/06/28 17:26:12 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 
 # define KEY_ESC		0x35
 # define KEY_SPACE		0x31
-# define KEY_LCTRL		0x3B
+# define KEY_LCTRL		0x100
 
 # define KEY_LEFT		0x7B
 # define KEY_RIGHT		0x7C

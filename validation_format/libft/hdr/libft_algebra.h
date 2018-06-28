@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/20 18:44:44 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/05/20 18:45:13 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/06/28 17:57:48 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # define HALF_PI		0x1.921fb54442d18p+0
 # define PI				0x1.921fb54442d18p+1
 # define TAU 			0x1.921fb54442d18p+2
-
-typedef t_f32			t_float;
 
 # define T_VEC3_SIZE		12
 # define T_VEC4_SIZE		16
