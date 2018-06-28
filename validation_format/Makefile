@@ -25,7 +25,7 @@ DBFLAGS =	-fsanitize=address
 LIBASAN =	-lasan
 LOC_LX	=	/usr/lib/x86_64-linux-gnu/
 LIB_SUFF=	_Linux
-LOC_LMLX=	../
+LOC_LMLX=	../../
 LIBS	=	$(LIBASAN) -lm -L$(LOC_LMLX) -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L$(LOC_LX) -lX11 -lXext
 else
 DBFLAGS =	
@@ -64,7 +64,7 @@ RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
 GREEN	=	"\033[0;32m"
 
-$(NAME): $(LFTDIR)$(LFT) $(OBJS)
+$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN)
 	@printf "Compiling fdf: "$@" -> "$(RED)
 	@$(CC) $(CFLAGS) -c $(MAIN) -I$(HDRDIR)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@

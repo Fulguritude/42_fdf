@@ -19,7 +19,7 @@ CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 
 #LMLX		=	libmlx_$(PLATFORM).a
-LOC_LMLX	=	./
+LOC_LMLX	=	../
 
 ifeq ($(PLATFORM),LINUX)
 DBFLAGS =	-fsanitize=address
