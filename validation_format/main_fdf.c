@@ -28,7 +28,7 @@ void			exit_error(char *e_msg, int e_no)
 
 void			show_debug_info(t_control *ctrl)
 {
-	char *str;
+	char	*str;
 
 	str = NULL;
 	ft_asprintf(&str, "zoom: %.4f", ctrl->cam.polar_pos[0]);
