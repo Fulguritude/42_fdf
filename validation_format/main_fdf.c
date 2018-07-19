@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 15:14:38 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/04/18 15:14:52 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/07/19 15:19:04 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int				main(int argc, char **argv)
 	t_control	ctrl;
 	t_vec_3d	init_polar_cam_pos;
 
-	if (argc <= 1)
-		exit_error("usage: \"./fdf filepath/to/fdf/map.fdf\"\n", 0);
+	if (argc != 2)
+		exit_error("usage: \"./fdf [filepath/to/fdf/map.fdf]\"\n", 0);
 	init_mlx(&ctrl);
 	ctrl.debug = 0;
 	ctrl.fdf = init_fdf(argv[1]);

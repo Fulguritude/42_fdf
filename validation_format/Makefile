@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/06/25 19:38:56 by tduquesn         ###   ########.fr        #
+#    Updated: 2018/07/19 15:39:43 by tduquesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	fdf
 LFT		=	libft.a
 
 
-PLATFORM=	LINUX
+PLATFORM=	MACOS
 CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 
@@ -39,10 +39,9 @@ endif
 
 HDRDIR	=	./
 LFTDIR	=	./libft/
-TSTDIR	=	./tests/
+TSTDIR	=	../unit_tests/
 
-HDRS	=	fdf.h					\
-			get_next_line.h
+HDRS	=	fdf.h
 SRCS	=	reader_fdf.c			\
 			bresenham.c				\
 			image_utils.c			\
@@ -56,19 +55,18 @@ OBJS	=	$(SRCS:.c=.o)
 MAIN	=	main_fdf.c
 OBJ_MAIN=	$(MAIN:.c=.o)
 
-TST_DIR		=	unit_tests
-TST_MAIN	=	$(TST_DIR)/unit_tests.c
+TST_MAIN	=	$(TSTDIR)unit_tests.c
 TST_EXEC	=	test.out
 
 RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
 GREEN	=	"\033[0;32m"
 
-$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN)
-	@printf "Compiling fdf: "$@" -> "$(RED)
+$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN) $(addprefix $(HDRDIR), $(HDRS)) 
+	@echo "Compiling fdf: "$@" -> \c"$(RED)
 	@$(CC) $(CFLAGS) -c $(MAIN) -I$(HDRDIR)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@
-	@printf $(GREEN)"OK!"$(RESET)"\n"
+	@echo $(GREEN)"OK!"$(RESET)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR)
@@ -83,13 +81,13 @@ clean:
 	@rm -f $(OBJS) $(OBJ_MAIN)
 
 fclean:clean
-	@rm -f $(LFTDIR)$(LFT)
+	$(MAKE) -C $(LFTDIR) $@
 	@rm -f $(NAME)
 
 re:fclean all
 
 test:$(LFTDIR)$(LFT) $(OBJS)
-	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(TST_MAIN) $(LIBASAN) -lm -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L. -lX11 -L$(LOC_LX) -lXext -L$(LOC_LX) -o $(TST_EXEC)
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(TST_MAIN) $(LIBS) -o $(TST_EXEC)
 	./$(TST_EXEC)
 	@rm -f $(TST_MAIN:.c=.o) $(TST_EXEC)
 

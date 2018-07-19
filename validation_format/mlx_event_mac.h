@@ -6,12 +6,12 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 01:19:28 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/29 01:20:07 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/07/19 15:20:54 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_EVENT_MAC
-# define MLX_EVENT_MAC
+#ifndef MLX_EVENT_MAC_H
+# define MLX_EVENT_MAC_H
 
 # define L_CLICK		0x1
 # define R_CLICK		0x2

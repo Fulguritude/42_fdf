@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 03:33:15 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/05/18 03:33:26 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/07/19 15:22:46 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,8 @@ int				handle_redraw(void *param)
 		vec3_cpy((t_float *)tmp, ctrl->fdf.vtx_lst[i].world_pos);
 		tmp[2] *= ctrl->fdf.h_scale;
 		tmp[3] = 1.;
-		mat44_app_vec((t_float *)tmp, w_to_v, tmp);
-		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, (t_float *)w_to_v + 12);
+		mat44_app_vec(tmp, w_to_v, tmp);
+		vec3_sub(ctrl->fdf.vtx_lst[i].view_pos, tmp, ((t_float *)w_to_v) + 12);
 		vec3_scale(ctrl->fdf.vtx_lst[i].view_pos, 10. * ctrl->cam.polar_pos[0],
 					ctrl->fdf.vtx_lst[i].view_pos);
 		ctrl->fdf.vtx_lst[i].proj_pos =

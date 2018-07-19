@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/04/26 16:19:45 by tduquesn         ###   ########.fr        #
+#    Updated: 2018/07/19 15:34:45 by tduquesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -357,25 +357,25 @@ GREEN	:=	"\033[0;32m"
 #$^ is a call to the string of the current dependencies
 #$< is a call to the string of the first dependency in case of multiple deps
 
-$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR)$,$(OBJS))
-	@printf "Compiling library: "$@" -> "$(RED)
+$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR)$,$(OBJS)) $(addprefix $(HDRDIR)$,$(HDRS))
+	@echo "Compiling library: "$@" -> \c"$(RED)
 	@ar -rc $@ $(addprefix $(OBJDIR)$,$(OBJS))
 	@ranlib $@
-	@printf $(GREEN)"OK!"$(RESET)"\n"
+	@echo $(GREEN)"OK!"$(RESET)
 
 $(OBJDIR)%.o:$(SRCDIR)%.c
-#@printf "Compiling file: "$@" -> "$(RED)
+	@echo "Compiling file: "$@" -> \c"$(RED)
 	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR) -o $@
-#@printf $(GREEN)"OK!"$(RESET)"\n"
+	@echo $(GREEN)"OK!"$(RESET)
 
 all: $(NAME)
 
 clean:
-	@printf "Calling libft clean...\n"
+	@echo "Calling libft clean..."
 	@rm -f $(addprefix $(OBJDIR),$(OBJS))
 
 fclean: clean
-	@printf "Calling libft fclean...\n"
+	@echo "Calling libft fclean..."
 	@rm -f $(NAME)
 
 re:fclean all

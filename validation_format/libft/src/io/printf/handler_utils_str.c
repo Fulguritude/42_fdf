@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 16:18:27 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/25 16:54:22 by tduquesn         ###   ########.fr       */
+/*   Updated: 2018/06/28 17:16:27 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@
 
 static char		*encode_unicodepoint_to_utf8(wchar_t c)
 {
-	t_u32	size;
+	int		size;
 	char	*utf8_c;
 
 	if (c > 0x10FFFF)
 		return (NULL);
 	size = 1 + (c > 0x7F) + (c > 0x7FF) + (c > 0xFFFF);
-	if (size > MB_CUR_MAX)
+	if (size > (long)MB_CUR_MAX)
 		return ("MB_CUR_MAX_ERROR");
 	if (!(utf8_c = ft_strnew(size)))
 		return (NULL);

@@ -6,12 +6,12 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 01:19:28 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/29 01:20:07 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/07/19 15:20:40 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_EVENT_LIN
-# define MLX_EVENT_LIN
+#ifndef MLX_EVENT_LIN_H
+# define MLX_EVENT_LIN_H
 
 /*
 ** for keypad int codes /usr/include/X11/keysymdef.h

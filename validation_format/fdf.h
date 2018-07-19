@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 15:35:26 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/28 17:26:12 by tduquesn         ###   ########.fr       */
+/*   Updated: 2018/07/16 21:02:33 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include "libft/hdr/libft_str.h"
 # include "libft/hdr/get_next_line.h"
 # include "libft/hdr/ft_printf.h"
-# include "mlx_event_lin.h"
+# include "mlx_event_mac.h"
 
 # define MAX_LINE_SIZE	4096
 # define MAX_LINE_NB	4096
