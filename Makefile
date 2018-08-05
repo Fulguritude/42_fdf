@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/04/26 15:35:27 by tduquesn         ###   ########.fr        #
+#    Updated: 2018/06/28 17:16:52 by tduquesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,26 @@ NAME	=	fdf
 LFT		=	libft.a
 
 
-PLATFORM=	LINUX
+PLATFORM=	MACOS
 CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 
 #LMLX		=	libmlx_$(PLATFORM).a
-LOC_LMLX	=	../
 
 ifeq ($(PLATFORM),LINUX)
 DBFLAGS =	-fsanitize=address
 LIBASAN =	-lasan
 LOC_LX	=	/usr/lib/x86_64-linux-gnu/
 LIB_SUFF=	_Linux
+LOC_LMLX=	../../
+LIBS	=	$(LIBASAN) -lm -L$(LOC_LMLX) -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L$(LOC_LX) -lX11 -lXext
 else
 DBFLAGS =	
 LIBASAN =
-LOC_LX	=
+LOC_LX	=	/usr/X11/lib
 LIB_SUFF=
+LOC_LMLX=
+LIBS	=	-lmlx -framework OpenGL -framework AppKit -L$(LFTDIR) -lft
 endif
 
 
@@ -61,10 +64,10 @@ RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
 GREEN	=	"\033[0;32m"
 
-$(NAME): $(LFTDIR)$(LFT) $(OBJS)
+$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN)
 	@printf "Compiling fdf: "$@" -> "$(RED)
 	@$(CC) $(CFLAGS) -c $(MAIN) -I$(HDRDIR)
-	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBASAN) -lm -L$(LOC_LMLX) -lmlx$(LIB_SUFF) -L$(LFTDIR) -lft -L$(LOC_LX) -lX11 -lXext -o $@
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 %.o: %.c
